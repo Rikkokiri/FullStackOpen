@@ -1,0 +1,15 @@
+{
+  "name": "part8",
+  "version": "1.0.0",
+  "description": "Tasks for part 8 (GraphQL) of Full Stack Open course",
+  "main": "library-backend.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ossian Rajala",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.3.0",
+    "graphql": "^15.5.3"
+  }
+}
