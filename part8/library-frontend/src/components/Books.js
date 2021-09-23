@@ -1,22 +1,20 @@
 import React from "react";
 
-const Books = (props) => {
-  if (!props.show) {
+const Books = ({ show, books }) => {
+  if (!show) {
     return null;
   }
 
-  const books = [];
-
   return (
     <div>
-      <h2>books</h2>
+      <h2>Books</h2>
 
       <table>
         <tbody>
           <tr>
             <th></th>
-            <th>author</th>
-            <th>published</th>
+            <th>Author</th>
+            <th>Published</th>
           </tr>
           {books.map((a) => (
             <tr key={a.title}>

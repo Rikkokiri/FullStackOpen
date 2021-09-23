@@ -7,13 +7,13 @@ const Authors = ({ show, authors }) => {
 
   return (
     <div>
-      <h2>authors</h2>
+      <h2>Authors</h2>
       <table>
         <tbody>
           <tr>
             <th></th>
-            <th>born</th>
-            <th>books</th>
+            <th>Born</th>
+            <th>Books</th>
           </tr>
           {authors.map((a) => (
             <tr key={a.name}>
