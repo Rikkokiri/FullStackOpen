@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css?family=Bowlby+One+SC&display=swap');
+
+html {
+  font-size: 16px;
+}
+
+body {
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  font-family: 'Bowlby One SC', sans-serif;
+
+  color: #041f39;
+  text-align: center;
+  background-color: #ccdbdc;
+  font-weight: 200;
+}
+
+.AppContainer {
+  width: 100%;
+  position: relative;
+}
+
+h1 {
+  font-family: 'Bowlby One SC', sans-serif;
+  color: #041f39;
+  margin-bottom: 1.5rem;
+  font-size: 4.5rem;
+  font-weight: 300;
+  line-height: 5.5rem;
+}
+
+button.feedback,
+button.reset {
+  font-family: 'Bowlby One SC', sans-serif;
+  margin: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  box-shadow: none;
+  color: #fff;
+  border: 3px solid #fff;
+}
+
+button.feedback {
+  font-size: 1.5rem;
+  padding: 0.5rem 1.5rem;
+}
+
+button.good {
+  background-color: #0b7a75;
+}
+
+button.ok {
+  background-color: #42cafd;
+  background-color: #094074;
+}
+
+button.bad {
+  background-color: darkred;
+}
+
+button.reset {
+  font-size: 1rem;
+  display: block;
+  margin: 1rem auto;
+  padding: 0.25rem 1rem;
+  background-color: black;
+}
+
+.statsContainer {
+  font-size: 2rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 3rem auto;
+}
+
+.statsContainer div {
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
