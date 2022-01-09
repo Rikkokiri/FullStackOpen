@@ -8,13 +8,12 @@ const AnecdoteForm = (props) => {
   const addAnecdote = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
-    console.log('Content: ', content)
     event.target.anecdote.value = ''
     dispatch(createAnecdote(content))
   }
 
   return (
-    <div>
+    <>
       <h2>Create new</h2>
       <form onSubmit={addAnecdote}>
         <div>
@@ -22,7 +21,7 @@ const AnecdoteForm = (props) => {
         </div>
         <button>create</button>
       </form>
-    </div>
+    </>
   )
 }
 
