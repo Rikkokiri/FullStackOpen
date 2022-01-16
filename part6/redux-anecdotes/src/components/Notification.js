@@ -14,10 +14,10 @@ const Notification = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    notification: state.notification,
+    notification: state.notification.content,
   }
 }
 
-const ConnectedNofication = connect(mapStateToProps)(Notification)
+const ConnectedNotification = connect(mapStateToProps, null)(Notification)
 
-export default ConnectedNofication
+export default ConnectedNotification
