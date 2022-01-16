@@ -17,10 +17,15 @@ export const clearNotification = () => {
   }
 }
 
-export const setNotification = (notification) => {
-  return {
-    type: 'SET_NOTIFICATION',
-    data: { notification },
+export const setNotification = (notification, time = 5) => {
+  return async (dispatch) => {
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      data: { notification },
+    })
+    setTimeout(() => {
+      dispatch(clearNotification())
+    }, time * 1000)
   }
 }
 
