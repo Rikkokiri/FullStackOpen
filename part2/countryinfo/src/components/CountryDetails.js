@@ -16,7 +16,7 @@ const CountryDetails = ({ country, weather }) => {
           {country.languages.map(lang => <li key={lang.name}>{lang.name}</li>)}
         </ul>
       </div>
-      <img src={country.flag} height='150' />
+      <img src={country.flag} height='150' alt={`flag of ${country}`} />
       <h3>Weather in {country.capital}</h3>
       {weather
         ? <WeatherDetails weather={weather} />
