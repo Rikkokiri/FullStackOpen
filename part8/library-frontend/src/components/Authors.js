@@ -1,4 +1,49 @@
-import React from "react";
+import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
+import { UPDATE_AUTHOR_BIRTHYEAR, ALL_AUTHORS } from '../queries';
+
+const AuthorDetailsForm = () => {
+  const [name, setName] = useState('');
+  const [year, setYear] = useState('');
+
+  const [updateBirthyear] = useMutation(UPDATE_AUTHOR_BIRTHYEAR, {
+    refetchQueries: [{ query: ALL_AUTHORS }],
+  });
+
+  const submit = async (event) => {
+    event.preventDefault();
+    console.log('Updating birth year');
+
+    const setBornTo = Number(year);
+    updateBirthyear({ variables: { name, setBornTo } });
+
+    setName('');
+    setYear('');
+  };
+
+  return (
+    <div>
+      <h3>Set birthyear</h3>
+      <form onSubmit={submit}>
+        <div>
+          Name
+          <input
+            value={name}
+            onChange={({ target }) => setName(target.value)}
+          />
+        </div>
+        <div>
+          Year
+          <input
+            value={year}
+            onChange={({ target }) => setYear(target.value)}
+          />
+        </div>
+        <button type="submit">Update author</button>
+      </form>
+    </div>
+  );
+};
 
 const Authors = ({ show, authors }) => {
   if (!show) {
@@ -24,6 +69,7 @@ const Authors = ({ show, authors }) => {
           ))}
         </tbody>
       </table>
+      <AuthorDetailsForm />
     </div>
   );
 };
