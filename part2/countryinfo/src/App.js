@@ -13,9 +13,9 @@ const App = () => {
   const countriesHook = () => {
     if (query !== '') {
       axios
-        .get('https://restcountries.eu/rest/v2/all')
+        .get('https://restcountries.com/v2/all')
         .then(response => {
-          const filtered = filterResuls(query, response.data)
+          const filtered = filterResults(query, response.data)
           setMatches(filtered)
         })
     } else {
@@ -44,7 +44,7 @@ const App = () => {
 
   useEffect(weatherHook, [matches])
 
-  const filterResuls = (name, countries) => {
+  const filterResults = (name, countries) => {
     // First check for exact match
     let exactMatch = countries.filter(country => country.name.toLowerCase() === name.toLowerCase())
     if (exactMatch.length >= 1) {
