@@ -36,7 +36,6 @@ const App = () => {
       axios
         .get('http://api.weatherstack.com/current', { params })
         .then(response => {
-          console.log('Weather data', response.data.current)
           setWeather(response.data)
         })
     }
