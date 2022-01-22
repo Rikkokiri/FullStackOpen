@@ -1,4 +1,4 @@
-# FullStackOpen2020
+# FullStackOpen
 
 My solutions to assignments of course Full Stack Open https://fullstackopen.com/
 
