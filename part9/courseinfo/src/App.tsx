@@ -47,6 +47,18 @@ const Part = ({ part }: { part: CoursePart }) => {
           Submit to {part.exerciseSubmissionLink}
         </p>
       );
+    case 'special':
+      return (
+        <p className="course-part">
+          <strong>
+            {part.name} {part.exerciseCount}
+          </strong>
+          <br />
+          <em>{part.description}</em>
+          <br />
+          required skills: {part.requirements.join(', ')}
+        </p>
+      );
     default:
       return assertNever(part);
   }
@@ -95,7 +107,16 @@ interface CourseSubmissionPart extends PartWithDescription {
   exerciseSubmissionLink: string;
 }
 
-type CoursePart = CourseNormalPart | CourseProjectPart | CourseSubmissionPart;
+interface CourseSpecialPart extends PartWithDescription {
+  type: 'special';
+  requirements: string[];
+}
+
+type CoursePart =
+  | CourseNormalPart
+  | CourseProjectPart
+  | CourseSubmissionPart
+  | CourseSpecialPart;
 
 const App = () => {
   const courseName = 'Half Stack application development';
@@ -125,6 +146,13 @@ const App = () => {
       description: 'Confusing description',
       exerciseSubmissionLink: 'https://fake-exercise-submit.made-up-url.dev',
       type: 'submission',
+    },
+    {
+      name: 'Backend development',
+      exerciseCount: 21,
+      description: 'Typing the backend',
+      requirements: ['nodejs', 'jest'],
+      type: 'special',
     },
   ];
 
