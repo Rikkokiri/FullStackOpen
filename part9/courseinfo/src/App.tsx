@@ -17,47 +17,41 @@ const Part = ({ part }: { part: CoursePart }) => {
   switch (part.type) {
     case 'normal':
       return (
-        <p className="course-part">
-          <strong>
+        <div className="course-part">
+          <p className="part-name">
             {part.name} {part.exerciseCount}
-          </strong>
-          <br />
-          <em>{part.description}</em>
-        </p>
+          </p>
+          <p className="part-desc">{part.description}</p>
+        </div>
       );
     case 'groupProject':
       return (
-        <p className="course-part">
-          <strong>
+        <div className="course-part">
+          <p className="part-name">
             {part.name} {part.exerciseCount}
-          </strong>
-          <br />
-          Project exercises {part.groupProjectCount}
-        </p>
+          </p>
+          <p>Project exercises {part.groupProjectCount}</p>
+        </div>
       );
     case 'submission':
       return (
-        <p className="course-part">
-          <strong>
+        <div className="course-part">
+          <p className="part-name">
             {part.name} {part.exerciseCount}
-          </strong>
-          <br />
-          <em>{part.description}</em>
-          <br />
-          Submit to {part.exerciseSubmissionLink}
-        </p>
+          </p>
+          <p className="part-desc">{part.description}</p>
+          <p>Submit to {part.exerciseSubmissionLink}</p>
+        </div>
       );
     case 'special':
       return (
-        <p className="course-part">
-          <strong>
+        <div className="course-part">
+          <p className="part-name">
             {part.name} {part.exerciseCount}
-          </strong>
-          <br />
-          <em>{part.description}</em>
-          <br />
-          required skills: {part.requirements.join(', ')}
-        </p>
+          </p>
+          <p className="part-desc">{part.description}</p>
+          <p>required skills: {part.requirements.join(', ')}</p>
+        </div>
       );
     default:
       return assertNever(part);
@@ -76,7 +70,7 @@ const Content = ({ parts }: { parts: CoursePart[] }) => {
 
 const Total = ({ parts }: { parts: CoursePart[] }) => {
   return (
-    <p>
+    <p className="total">
       Number of exercises{' '}
       {parts.reduce((total, part) => total + part.exerciseCount, 0)}
     </p>

@@ -1,0 +1,38 @@
+body {
+  font-size: 18px;
+  padding: 0.5rem 2rem;
+  font-family: monospace;
+}
+
+h1 {
+  margin-top: 1rem;
+}
+
+.course-part {
+  margin-block-start: 1.5rem;
+  margin-block-end: 1.5rem;
+}
+
+.course-part p {
+  margin-block-start: 0;
+  margin-block-end: 0;
+}
+
+.part-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.part-desc {
+  font-style: italic;
+}
+
+.total {
+  display: block;
+  max-width: 600px;
+  height: auto;
+  border-top: 2px solid black;
+  margin-top: 2rem;
+  padding-top: 0.75rem;
+  font-size: 1.25rem;
+}
