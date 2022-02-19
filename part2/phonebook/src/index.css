@@ -60,7 +60,8 @@ li button {
   margin-left: 1rem;
 }
 
-.status, .error {
+.status,
+.error {
   border-width: 3px;
   border-style: solid;
   display: inline-block;
