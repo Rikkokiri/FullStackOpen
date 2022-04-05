@@ -63,16 +63,24 @@ const App = () => {
         number: newNumber,
       };
 
-      contactsService.create(personObject).then((returnedPerson) => {
-        console.log(returnedPerson);
-        setNewNumber('');
-        setNewName('');
-        setStatusMessage({ msg: `Added ${returnedPerson.name}`, error: false });
-        setTimeout(() => {
-          setStatusMessage(null);
-        }, 2500);
-        setPersons(persons.concat(returnedPerson));
-      });
+      contactsService
+        .create(personObject)
+        .then((returnedPerson) => {
+          console.log(returnedPerson);
+          setNewNumber('');
+          setNewName('');
+          setStatusMessage({
+            msg: `Added ${returnedPerson.name}`,
+            error: false,
+          });
+          setTimeout(() => {
+            setStatusMessage(null);
+          }, 2500);
+          setPersons(persons.concat(returnedPerson));
+        })
+        .catch((error) => {
+          setStatusMessage({ msg: error.response.data.error, error: true });
+        });
     }
   };
 
