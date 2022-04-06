@@ -10,7 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [filterInput, setFilterInput] = useState('');
-  const [statusMessage, setStatusMessage] = useState(null); // { mgs: '', error: false }
+  const [statusMessage, setStatusMessage] = useState(null);
 
   useEffect(() => {
     contactsService.getAll().then((initialPersons) => {
@@ -42,24 +42,26 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault();
+    const name = newName.trim(); // Remove trailing whitespace
+    console.log('name to submit:', name);
 
     // If the phone book already includes the name that user tries to add, prevent adding it.
     // (Case insensitive check)
-    if (persons.some((p) => p.name.toLowerCase() === newName.toLowerCase())) {
+    if (persons.some((p) => p.name.toLowerCase() === name.toLowerCase())) {
       if (
         window.confirm(
-          `Name '${newName}' is already in the phonebook. Replace the old number with new one?`,
+          `Name '${name}' is already in the phonebook. Replace the old number with new one?`,
         )
       ) {
-        return updateNumber(newName);
+        return updateNumber(name);
       }
     } else if (persons.some((p) => p.number === newNumber)) {
       window.alert(`The number ${newNumber} is already in the phonebook.`);
-    } else if (newName === '' || newNumber === '') {
+    } else if (name === '' || newNumber === '') {
       window.alert('Both fields need to be filled.');
     } else {
       const personObject = {
-        name: newName,
+        name: name,
         number: newNumber,
       };
 
@@ -108,12 +110,7 @@ const App = () => {
       })
       .catch((error) => {
         console.log(error);
-        setPersons(persons.filter((p) => p.id !== person.id));
-
-        setStatusMessage({
-          msg: `Contact ${person.name} was already deleted from server`,
-          error: true,
-        });
+        setStatusMessage({ msg: error.response.data.error, error: true });
         setTimeout(() => {
           setStatusMessage(null);
         }, 2500);
@@ -124,14 +121,12 @@ const App = () => {
     if (window.confirm(`Delete ${person.name}?`)) {
       contactsService
         .remove(person.id)
-        .then((response) => {
+        .then(() => {
           setPersons(persons.filter((p) => p.id !== person.id));
         })
         .catch((error) => {
           console.log(error);
-          window.alert(
-            `The contact '${person.name} was already deleted from server.'`,
-          );
+          setStatusMessage({ msg: error.response.data.error, error: true });
           setPersons(persons.filter((p) => p.id !== person.id));
         });
     }
