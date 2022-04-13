@@ -13,17 +13,21 @@
  * Source: https://en.wikipedia.org/wiki/Body_mass_index
  */
 
-function calculateBmi(height: number, weight: number): string {
+export function calculateBmi(height: number, weight: number): string {
   const heightInMeters = height / 100;
   const bmi = weight / (heightInMeters * heightInMeters);
 
   if (bmi <= 18.5) {
-    return "Underweight (unhealthy weight)";
+    return 'Underweight (unhealthy weight)';
   } else if (bmi <= 22.9) {
-    return "Normal (healthy weight)";
+    return 'Normal (healthy weight)';
   } else {
-    return "Overweight (unhealthy weight)";
+    return 'Overweight (unhealthy weight)';
   }
 }
 
-console.log(calculateBmi(180, 74)); // should print the following message: Normal (healthy weight)
+// console.log(calculateBmi(180, 74)); // should print the following message: Normal (healthy weight)
+
+// Read command line paramters:
+// const h: number = Number(process.argv[2]);
+// const w: number = Number(process.argv[2]);
