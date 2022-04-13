@@ -13,6 +13,14 @@ const App = () => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
+  useEffect(() => {
+    const userJSON = window.localStorage.getItem('bloglistUser');
+    if (userJSON) {
+      const parsedUser = JSON.parse(userJSON);
+      setUser(parsedUser);
+    }
+  }, []);
+
   const handleLogin = async (event) => {
     event.preventDefault();
     console.log('Logging in');
@@ -21,6 +29,7 @@ const App = () => {
       const user = await loginService.login({ username, password });
       console.log('login response', user);
       setUser(user);
+      window.localStorage.setItem('bloglistUser', JSON.stringify(user));
       setUsername('');
       setPassword('');
     } catch (error) {
@@ -30,6 +39,7 @@ const App = () => {
 
   const handleLogout = () => {
     setUser(null);
+    window.localStorage.removeItem('bloglistUser');
   };
 
   const loginForm = () => {
