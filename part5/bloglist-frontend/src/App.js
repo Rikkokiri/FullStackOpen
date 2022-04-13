@@ -4,12 +4,14 @@ import * as blogService from './services/blogs';
 import * as loginService from './services/login';
 import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
+import Notification from './components/Notification';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [statusMessage, setStatusMessage] = useState(null);
 
   // New blog details
   const [blogAuthor, setBlogAuthor] = useState('');
@@ -41,7 +43,11 @@ const App = () => {
       setUsername('');
       setPassword('');
     } catch (error) {
-      console.log('Error', error);
+      console.log(error);
+      setStatusMessage({ msg: error.response.data.error, error: true });
+      setTimeout(() => {
+        setStatusMessage(null);
+      }, 2500);
     }
   };
 
@@ -67,6 +73,14 @@ const App = () => {
       setBlogTitle('');
       setBlogUrl('');
 
+      setStatusMessage({
+        msg: `A new blog "${returnedBlog.title}" by ${returnedBlog.author} added`,
+        error: false,
+      });
+      setTimeout(() => {
+        setStatusMessage(null);
+      }, 2500);
+
       setBlogs(blogs.concat(returnedBlog));
     } catch (error) {
       // TODO: Show error message to user
@@ -76,21 +90,28 @@ const App = () => {
 
   if (!user) {
     return (
-      <LoginForm
-        handleLogin={handleLogin}
-        username={username}
-        setUsername={setUsername}
-        password={password}
-        setPassword={setPassword}
-      />
+      <div>
+        <h1>Log in to the application</h1>
+        <Notification message={statusMessage} />
+        <LoginForm
+          handleLogin={handleLogin}
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+        />
+      </div>
     );
   }
 
   return (
     <div>
       <h2>Blogs</h2>
-      <p>{user.name || user.username} logged in</p>{' '}
-      <button onClick={handleLogout}>Log out</button>
+      {statusMessage && <Notification message={statusMessage} />}
+      <div>
+        <span>{user.name ? user.name : user.username} logged in </span>
+        <button onClick={handleLogout}>Log out</button>
+      </div>
       <BlogForm
         createBlog={createBlog}
         title={blogTitle}
