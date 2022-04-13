@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Blog from './components/Blog';
 import * as blogService from './services/blogs';
 import * as loginService from './services/login';
+import LoginForm from './components/LoginForm';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -42,37 +43,16 @@ const App = () => {
     window.localStorage.removeItem('bloglistUser');
   };
 
-  const loginForm = () => {
-    return (
-      <form onSubmit={handleLogin}>
-        <h1>Log in to the application</h1>
-        <div>
-          <label htmlFor="username">username </label>
-          <input
-            type="text"
-            value={username}
-            onChange={({ target }) => setUsername(target.value)}
-            name="username"
-            id="username"
-          />
-        </div>
-        <div>
-          <label htmlFor="password">password </label>
-          <input
-            type="password"
-            value={password}
-            onChange={({ target }) => setPassword(target.value)}
-            name="password"
-            id="password"
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
-    );
-  };
-
   if (!user) {
-    return loginForm();
+    return (
+      <LoginForm
+        handleLogin={handleLogin}
+        username={username}
+        setUsername={setUsername}
+        password={password}
+        setPassword={setPassword}
+      />
+    );
   }
 
   return (
