@@ -3,6 +3,7 @@ import Blog from './components/Blog';
 import * as blogService from './services/blogs';
 import * as loginService from './services/login';
 import LoginForm from './components/LoginForm';
+import BlogForm from './components/BlogForm';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -73,45 +74,6 @@ const App = () => {
     }
   };
 
-  const blogForm = () => {
-    return (
-      <form onSubmit={createBlog}>
-        <h2>Create new</h2>
-        <div>
-          <label htmlFor="title">Title</label>
-          <input
-            type="text"
-            value={blogTitle}
-            onChange={({ target }) => setBlogTitle(target.value)}
-            name="title"
-            id="title"
-          />
-        </div>
-        <div>
-          <label htmlFor="author">Author</label>
-          <input
-            type="text"
-            value={blogAuthor}
-            onChange={({ target }) => setBlogAuthor(target.value)}
-            name="author"
-            id="author"
-          />
-        </div>
-        <div>
-          <label htmlFor="url">Url</label>
-          <input
-            type="text"
-            value={blogUrl}
-            onChange={({ target }) => setBlogUrl(target.value)}
-            name="url"
-            id="url"
-          />
-        </div>
-        <button type="submit">Create</button>
-      </form>
-    );
-  };
-
   if (!user) {
     return (
       <LoginForm
@@ -129,7 +91,15 @@ const App = () => {
       <h2>Blogs</h2>
       <p>{user.name || user.username} logged in</p>{' '}
       <button onClick={handleLogout}>Log out</button>
-      <div>{blogForm()}</div>
+      <BlogForm
+        createBlog={createBlog}
+        title={blogTitle}
+        setTitle={setBlogTitle}
+        author={blogAuthor}
+        setAuthor={setBlogAuthor}
+        url={blogUrl}
+        setUrl={setBlogUrl}
+      />
       <br />
       {blogs.map((blog) => (
         <Blog key={blog.id} blog={blog} />
