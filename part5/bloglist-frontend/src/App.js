@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Blog from './components/Blog';
 import * as blogService from './services/blogs';
 import * as loginService from './services/login';
@@ -18,6 +18,8 @@ const App = () => {
   const [blogAuthor, setBlogAuthor] = useState('');
   const [blogTitle, setBlogTitle] = useState('');
   const [blogUrl, setBlogUrl] = useState('');
+
+  const blogFormRef = useRef();
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -59,9 +61,6 @@ const App = () => {
 
   const createBlog = async (event) => {
     event.preventDefault();
-    // const url = blogUrl.trim();
-    // TODO: Validate blog details
-
     const blogObject = {
       title: blogTitle,
       author: blogAuthor,
@@ -70,6 +69,8 @@ const App = () => {
 
     try {
       const returnedBlog = await blogService.create(blogObject);
+      blogFormRef.current.toggleVisibility();
+
       setBlogAuthor('');
       setBlogTitle('');
       setBlogUrl('');
@@ -84,8 +85,11 @@ const App = () => {
 
       setBlogs(blogs.concat(returnedBlog));
     } catch (error) {
-      // TODO: Show error message to user
       console.log('Error creating a blog', error);
+      setStatusMessage({ msg: error.response.data.error, error: true });
+      setTimeout(() => {
+        setStatusMessage(null);
+      }, 5000);
     }
   };
 
@@ -113,7 +117,7 @@ const App = () => {
         <span>{user.name ? user.name : user.username} logged in </span>
         <button onClick={handleLogout}>Log out</button>
       </div>
-      <Togglable showLabel={'New blog'} hideLabel={'Cancel'}>
+      <Togglable showLabel={'New blog'} hideLabel={'Cancel'} ref={blogFormRef}>
         <BlogForm
           createBlog={createBlog}
           title={blogTitle}
