@@ -9,9 +9,6 @@ body {
 label {
   display: inline-block;
   width: 3.5rem;
-  /* display: block;
-  margin-top: 1rem;
-  margin-bottom: 0.25rem; */
 }
 
 input {
@@ -25,8 +22,12 @@ button {
   border: 1px solid black;
   border-radius: 0;
   font-size: 0.9rem;
-  margin-top: 1.5rem;
   padding: 0.25rem 0.5rem;
+}
+
+form button,
+.togglable button {
+  margin-top: 1.5rem;
 }
 
 ul {
@@ -64,4 +65,21 @@ li button {
   border-color: darkred;
   background-color: rgb(248, 211, 211);
   color: darkred;
+}
+
+.blog-details {
+  margin: 0.3rem 0;
+  padding: 0.5rem;
+  border: 1px solid grey;
+}
+
+.blog-details button {
+  padding: 0.1rem 0.25rem;
+  margin: 0.1rem 0.2rem;
+}
+
+.blog-summaryrow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
