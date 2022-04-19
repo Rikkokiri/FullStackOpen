@@ -10,15 +10,18 @@ import Togglable from './components/Togglable';
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [statusMessage, setStatusMessage] = useState(null);
-
   const blogFormRef = useRef();
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    loadBlogs();
   }, []);
+
+  const loadBlogs = () => {
+    blogService
+      .getAll()
+      .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)));
+  };
 
   useEffect(() => {
     const userJSON = window.localStorage.getItem('bloglistUser');
@@ -29,23 +32,18 @@ const App = () => {
     }
   }, []);
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
-    console.log('Logging in');
-
+  const handleLogin = async (username, password) => {
     try {
       const user = await loginService.login({ username, password });
       blogService.setToken(user.token);
       setUser(user);
       window.localStorage.setItem('bloglistUser', JSON.stringify(user));
-      setUsername('');
-      setPassword('');
     } catch (error) {
-      console.log(error);
       setStatusMessage({ msg: error.response.data.error, error: true });
       setTimeout(() => {
         setStatusMessage(null);
       }, 2500);
+      throw error;
     }
   };
 
@@ -66,7 +64,6 @@ const App = () => {
       setTimeout(() => {
         setStatusMessage(null);
       }, 2500);
-
       setBlogs(blogs.concat(returnedBlog));
     } catch (error) {
       console.log('Error creating a blog', error);
@@ -79,13 +76,12 @@ const App = () => {
   };
 
   const handleLike = async (blog) => {
-    const returnedBlog = await blogService.update(blog.id, {
+    await blogService.update(blog.id, {
       ...blog,
       user: blog.user.id,
       likes: blog.likes + 1,
     });
-    console.log('returnedBlog: ', returnedBlog);
-    setBlogs(blogs.map((b) => (b.id !== blog.id ? b : returnedBlog)));
+    loadBlogs();
   };
 
   if (!user) {
@@ -93,13 +89,7 @@ const App = () => {
       <div>
         <h1>Log in to the application</h1>
         <Notification message={statusMessage} />
-        <LoginForm
-          handleLogin={handleLogin}
-          username={username}
-          setUsername={setUsername}
-          password={password}
-          setPassword={setPassword}
-        />
+        <LoginForm handleLogin={handleLogin} />
       </div>
     );
   }
@@ -116,11 +106,9 @@ const App = () => {
         <BlogForm createBlog={createBlog} />
       </Togglable>
       <br />
-      {blogs
-        .sort((a, b) => b.likes - a.likes)
-        .map((blog) => (
-          <Blog key={blog.id} blog={blog} handleLike={handleLike} />
-        ))}
+      {blogs.map((blog) => (
+        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
+      ))}
     </div>
   );
 };
