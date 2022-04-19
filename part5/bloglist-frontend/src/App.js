@@ -39,10 +39,7 @@ const App = () => {
       setUser(user);
       window.localStorage.setItem('bloglistUser', JSON.stringify(user));
     } catch (error) {
-      setStatusMessage({ msg: error.response.data.error, error: true });
-      setTimeout(() => {
-        setStatusMessage(null);
-      }, 2500);
+      showNotification(error.response.data.error, true);
       throw error;
     }
   };
@@ -52,25 +49,27 @@ const App = () => {
     window.localStorage.removeItem('bloglistUser');
   };
 
+  const showNotification = (message, error = false, delay = 2500) => {
+    setStatusMessage({
+      msg: message,
+      error: error,
+    });
+    setTimeout(() => {
+      setStatusMessage(null);
+    }, delay);
+  };
+
   const createBlog = async (blogObject) => {
     try {
       const returnedBlog = await blogService.create(blogObject);
       blogFormRef.current.toggleVisibility();
-
-      setStatusMessage({
-        msg: `A new blog "${returnedBlog.title}" by ${returnedBlog.author} added`,
-        error: false,
-      });
-      setTimeout(() => {
-        setStatusMessage(null);
-      }, 2500);
+      showNotification(
+        `A new blog "${returnedBlog.title}" by ${returnedBlog.author} added`
+      );
       setBlogs(blogs.concat(returnedBlog));
     } catch (error) {
       console.log('Error creating a blog', error);
-      setStatusMessage({ msg: error.response.data.error, error: true });
-      setTimeout(() => {
-        setStatusMessage(null);
-      }, 5000);
+      showNotification(error.response.data.error, true, 5000);
       throw error; // Throw error so blog form knowns error happened and does not reset fields
     }
   };
