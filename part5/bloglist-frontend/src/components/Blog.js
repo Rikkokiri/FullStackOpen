@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-const Blog = ({ blog, handleLike }) => {
+const Blog = ({ blog, handleLike, removeBlog, user }) => {
   const [showDetails, setShowDetails] = useState(false);
+  const allowDelete = blog.user.username === user.username;
 
   const toggleDetails = () => {
     setShowDetails((prev) => !prev);
@@ -26,6 +27,9 @@ const Blog = ({ blog, handleLike }) => {
             <button onClick={() => handleLike(blog)}>Like</button>
           </div>
           <div>{blog.user.username}</div>
+          {allowDelete && (
+            <button onClick={() => removeBlog(blog)}>Remove</button>
+          )}
         </div>
       )}
     </div>
