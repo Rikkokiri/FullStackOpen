@@ -1,14 +1,29 @@
-const BlogForm = ({
-  createBlog,
-  title,
-  setTitle,
-  author,
-  setAuthor,
-  url,
-  setUrl,
-}) => {
+import { useState } from 'react';
+
+const BlogForm = ({ createBlog }) => {
+  const [author, setAuthor] = useState('');
+  const [title, setTitle] = useState('');
+  const [url, setUrl] = useState('');
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const blogObject = {
+      title: title,
+      author: author,
+      url: url,
+    };
+    try {
+      await createBlog(blogObject);
+      setAuthor('');
+      setTitle('');
+      setUrl('');
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
-    <form onSubmit={createBlog}>
+    <form onSubmit={handleSubmit}>
       <h2>Create new</h2>
       <div>
         <label htmlFor="title">Title</label>

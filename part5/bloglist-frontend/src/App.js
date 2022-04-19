@@ -14,11 +14,6 @@ const App = () => {
   const [password, setPassword] = useState('');
   const [statusMessage, setStatusMessage] = useState(null);
 
-  // New blog details
-  const [blogAuthor, setBlogAuthor] = useState('');
-  const [blogTitle, setBlogTitle] = useState('');
-  const [blogUrl, setBlogUrl] = useState('');
-
   const blogFormRef = useRef();
 
   useEffect(() => {
@@ -59,21 +54,10 @@ const App = () => {
     window.localStorage.removeItem('bloglistUser');
   };
 
-  const createBlog = async (event) => {
-    event.preventDefault();
-    const blogObject = {
-      title: blogTitle,
-      author: blogAuthor,
-      url: blogUrl,
-    };
-
+  const createBlog = async (blogObject) => {
     try {
       const returnedBlog = await blogService.create(blogObject);
       blogFormRef.current.toggleVisibility();
-
-      setBlogAuthor('');
-      setBlogTitle('');
-      setBlogUrl('');
 
       setStatusMessage({
         msg: `A new blog "${returnedBlog.title}" by ${returnedBlog.author} added`,
@@ -90,6 +74,7 @@ const App = () => {
       setTimeout(() => {
         setStatusMessage(null);
       }, 5000);
+      throw error; // Throw error so blog form knowns error happened and does not reset fields
     }
   };
 
@@ -118,15 +103,7 @@ const App = () => {
         <button onClick={handleLogout}>Log out</button>
       </div>
       <Togglable showLabel={'New blog'} hideLabel={'Cancel'} ref={blogFormRef}>
-        <BlogForm
-          createBlog={createBlog}
-          title={blogTitle}
-          setTitle={setBlogTitle}
-          author={blogAuthor}
-          setAuthor={setBlogAuthor}
-          url={blogUrl}
-          setUrl={setBlogUrl}
-        />
+        <BlogForm createBlog={createBlog} />
       </Togglable>
       <br />
       {blogs.map((blog) => (
