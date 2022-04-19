@@ -50,7 +50,7 @@ describe('<Blog />', () => {
   });
 
   /**
-   * Make a test which checks that the blog's url and number of likes are shown
+   * 5.14 - Make a test which checks that the blog's url and number of likes are shown
    * when the button controlling the shown details has been clicked.
    */
   test('all details are revealed by clicking a button', async () => {
@@ -63,5 +63,20 @@ describe('<Blog />', () => {
     expect(url).toBeDefined();
     const likeButton = screen.getByText('Like');
     expect(likeButton).toBeDefined();
+  });
+
+  /**
+   * 5.15 - Make a test which ensures that if the like button is clicked twice,
+   * the event handler the component received as props is called twice.
+   */
+  test('like button calls event handler each time', async () => {
+    const showButton = await screen.findByText('View');
+    await userEvent.click(showButton);
+
+    const likeButton = screen.getByText('Like');
+    await userEvent.click(likeButton);
+    await userEvent.click(likeButton);
+
+    expect(mockHandleLike.mock.calls).toHaveLength(2);
   });
 });
