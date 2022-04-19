@@ -1,6 +1,7 @@
 import React from 'react';
-import '@testing-library/jest-dom/extend-expect';
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import userEvent from '@testing-library/user-event';
 import Blog from './Blog';
 
 describe('<Blog />', () => {
@@ -42,9 +43,25 @@ describe('<Blog />', () => {
     expect(title).toBeDefined();
     expect(author).toBeDefined();
 
-    const likeButton = screen.queryByText('like');
-    const url = screen.queryByText(blog.url, { exact: false });
+    const likeButton = screen.queryByText('Like');
+    const url = screen.queryByText(blog.url);
     expect(likeButton).toBeNull();
     expect(url).toBeNull();
+  });
+
+  /**
+   * Make a test which checks that the blog's url and number of likes are shown
+   * when the button controlling the shown details has been clicked.
+   */
+  test('all details are revealed by clicking a button', async () => {
+    const showButton = await screen.findByText('View');
+    await userEvent.click(showButton);
+
+    const likes = screen.getByText(`Likes ${blog.likes}`);
+    expect(likes).toBeDefined();
+    const url = screen.getByText(blog.url);
+    expect(url).toBeDefined();
+    const likeButton = screen.getByText('Like');
+    expect(likeButton).toBeDefined();
   });
 });
