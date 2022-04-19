@@ -46,6 +46,10 @@ li button {
   margin-left: 1rem;
 }
 
+.form-login label {
+  width: 4.5rem;
+}
+
 .status,
 .error {
   border-width: 3px;
