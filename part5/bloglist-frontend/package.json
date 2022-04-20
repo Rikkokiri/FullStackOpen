@@ -15,6 +15,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:cov": "npm run test -- --coverage",
+    "cypress:open": "cypress open",
+    "test:e2e": "cypress run",
     "lint": "eslint .",
     "eject": "react-scripts eject"
   },
@@ -41,9 +43,12 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.5",
     "@testing-library/user-event": "^14.1.1",
+    "cypress": "^9.5.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-jest": "^26.1.4",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
-    "prettier": "^2.6.2"
+    "prettier": "2.6.2"
   }
 }

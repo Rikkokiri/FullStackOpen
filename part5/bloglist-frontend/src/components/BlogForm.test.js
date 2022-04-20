@@ -13,13 +13,11 @@ describe('<BlogForm />', () => {
   test('event handler is called on form submit', async () => {
     const mockCreateBlog = jest.fn();
 
-    const { container } = render(<BlogForm createBlog={mockCreateBlog} />);
+    render(<BlogForm createBlog={mockCreateBlog} />);
 
-    // TODO: input fields (title, author, url)
-    const titleInput = container.querySelector('#title');
-    const authorInput = container.querySelector('#author');
-    const urlInput = container.querySelector('#url');
-
+    const titleInput = screen.getByLabelText('Title');
+    const authorInput = screen.getByLabelText('Author');
+    const urlInput = screen.getByLabelText('Url');
     const createButton = screen.getByText('Create');
 
     await userEvent.type(titleInput, 'Title of the blog');

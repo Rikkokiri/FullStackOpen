@@ -25,7 +25,7 @@ describe('<Blog />', () => {
   const mockHandleLike = jest.fn();
   const mockRemoveBlog = jest.fn();
 
-  beforeEach(() => {
+  const setupBlog = () =>
     render(
       <Blog
         blog={blog}
@@ -34,10 +34,9 @@ describe('<Blog />', () => {
         user={user}
       />
     );
-    // screen.debug();
-  });
 
   test('renders only basic details (title and author) by default', () => {
+    setupBlog();
     const title = screen.getByText(blog.title, { exact: false });
     const author = screen.getByText(blog.author, { exact: false });
     expect(title).toBeDefined();
@@ -54,6 +53,7 @@ describe('<Blog />', () => {
    * when the button controlling the shown details has been clicked.
    */
   test('all details are revealed by clicking a button', async () => {
+    setupBlog();
     const showButton = await screen.findByText('View');
     await userEvent.click(showButton);
 
@@ -70,6 +70,7 @@ describe('<Blog />', () => {
    * the event handler the component received as props is called twice.
    */
   test('like button calls event handler each time', async () => {
+    setupBlog();
     const showButton = await screen.findByText('View');
     await userEvent.click(showButton);
 
