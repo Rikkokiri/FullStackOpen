@@ -38,7 +38,6 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:3003",
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.5",
@@ -49,6 +48,7 @@
     "eslint-plugin-jest": "^26.1.4",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
+    "http-proxy-middleware": "^2.0.6",
     "prettier": "2.6.2"
   }
 }
