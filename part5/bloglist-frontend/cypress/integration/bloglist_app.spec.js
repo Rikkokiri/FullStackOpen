@@ -36,4 +36,19 @@ describe('Blog app', function () {
       cy.get('.error').should('have.css', 'color', 'rgb(139, 0, 0)');
     });
   });
+
+  describe('When logged in', function () {
+    beforeEach(function () {
+      cy.login({ username: 'troyboi', password: 'v!bez' });
+    });
+
+    it('A blog can be created', function () {
+      cy.contains('New blog').click();
+      cy.get('#title').type('Test blog post');
+      cy.get('#author').type('T.E. Ster');
+      cy.get('#url').type('www.testblog.com/test-blog-post');
+      cy.get('#submit-create').click();
+      cy.contains('Test blog post by T.E. Ster');
+    });
+  });
 });
