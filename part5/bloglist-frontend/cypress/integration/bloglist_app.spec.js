@@ -1,11 +1,19 @@
 describe('Blog app', function () {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/testing/reset');
+    cy.visit('http://localhost:3000');
     cy.createUser({
       username: 'troyboi',
-      name: 'Troy Henry',
       password: 'v!bez',
+      name: 'Troy Henry',
     });
+
+    cy.createUser({
+      username: 'lilnasx',
+      password: 'montero',
+      name: 'Lil Nas X',
+    });
+
     cy.visit('http://localhost:3000');
   });
 
@@ -84,17 +92,28 @@ describe('Blog app', function () {
 
       it('User can delete a blog they created', function () {
         cy.contains('Test blog').parent().find('button').click();
-        cy.contains('www.testblog.com/test-blog-post')
-          .parent()
-          .contains('Likes 0'); // View details
-
         cy.contains('www.testblog.com/test-blog-post') // Press remove button
           .parent()
           .contains('Remove')
           .click();
       });
 
-      // it('User cannot delete blogs created by others', function () {});
+      it('User cannot delete blogs created by others', function () {
+        // Log main test user out and in with new user
+        cy.visit('http://localhost:3000');
+        cy.contains('Log out').click();
+        cy.login({ username: 'lilnasx', password: 'montero' });
+
+        cy.contains('Test blog').parent().find('button').click();
+        cy.contains('www.testblog.com/test-blog-post')
+          .parent()
+          .contains('troyboi'); // Check that belongs to other user
+
+        cy.contains('www.testblog.com/test-blog-post') // Press remove button
+          .parent()
+          .contains('Remove')
+          .should('not.exist');
+      });
     });
   });
 });
