@@ -43,6 +43,10 @@ describe('Blog app', function () {
       cy.login({ username: 'troyboi', password: 'v!bez' });
     });
 
+    afterEach(() => {
+      cy.contains('Log out').click();
+    });
+
     it('A blog can be created', function () {
       cy.contains('New blog').click();
       cy.get('#title').type('Test blog post');
@@ -85,7 +89,10 @@ describe('Blog app', function () {
         cy.get('@blogEntry').contains('Remove').click();
       });
 
-      it.skip('User cannot delete blogs created by others', function () {
+      it('User cannot delete blogs created by others', function () {
+        cy.visit('http://localhost:3000/');
+        cy.contains('Log out').click();
+
         cy.createUser({
           username: 'lilnasx',
           password: 'montero',
@@ -93,8 +100,6 @@ describe('Blog app', function () {
         });
 
         // Log main test user out and in with new user
-        cy.visit('http://localhost:3000');
-        cy.contains('Log out').click();
         cy.login({ username: 'lilnasx', password: 'montero' });
 
         cy.contains('Test blog').parent().parent().as('blogEntry');
@@ -105,11 +110,12 @@ describe('Blog app', function () {
         cy.get('@blogEntry').contains('Remove').should('not.exist');
       });
 
-      it.only('blogs are ordered by likes', function () {
+      it('blogs are ordered by likes', function () {
         cy.contains('Second blog').parent().parent().as('blog2');
         cy.get('@blog2').contains('View').click();
         cy.get('@blog2').contains('Likes 0'); // View details
         cy.get('@blog2').contains('Like').click(); // Press like button
+        cy.get('@blog2').contains('Likes 1'); // View details
         cy.get('@blog2').contains('Hide').click();
 
         cy.get('.blog-details').first().contains('Second blog');
@@ -119,6 +125,7 @@ describe('Blog app', function () {
         cy.get('@blog3').contains('Likes 0'); // View details
         cy.get('@blog3').contains('Like').click();
         cy.get('@blog3').contains('Like').click();
+        cy.get('@blog3').contains('Likes 2'); // View details
         cy.get('@blog3').contains('Hide').click();
 
         cy.get('.blog-details').first().contains('Third blog');
