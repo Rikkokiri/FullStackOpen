@@ -1,19 +1,11 @@
 describe('Blog app', function () {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/testing/reset');
-    cy.visit('http://localhost:3000');
     cy.createUser({
       username: 'troyboi',
       password: 'v!bez',
       name: 'Troy Henry',
     });
-
-    cy.createUser({
-      username: 'lilnasx',
-      password: 'montero',
-      name: 'Lil Nas X',
-    });
-
     cy.visit('http://localhost:3000');
   });
 
@@ -78,42 +70,40 @@ describe('Blog app', function () {
       });
 
       it('User can like a blog', function () {
-        cy.contains('Second blog').parent().find('button').click();
-        cy.contains('www.blog2.com/posts').parent().contains('Likes 0'); // View details
-
-        cy.contains('www.blog2.com/posts') // Press like button
-          .parent()
-          .contains('Likes')
-          .find('button')
-          .click();
-
-        cy.contains('www.blog2.com/posts').parent().contains('Likes 1');
+        cy.contains('Second blog').parent().parent().as('blogEntry');
+        cy.get('@blogEntry').contains('View').click();
+        cy.get('@blogEntry').contains('Likes 0'); // View details
+        cy.get('@blogEntry').contains('Like').click(); // Press like button
+        cy.get('@blogEntry').contains('Likes 1');
       });
 
       it('User can delete a blog they created', function () {
-        cy.contains('Test blog').parent().find('button').click();
-        cy.contains('www.testblog.com/test-blog-post') // Press remove button
-          .parent()
-          .contains('Remove')
-          .click();
+        cy.contains('Test blog').parent().parent().as('blogEntry');
+        cy.get('@blogEntry').contains('View').click(); // Reveal details
+        cy.get('@blogEntry').contains('Remove').click();
       });
 
       it('User cannot delete blogs created by others', function () {
+        cy.createUser({
+          username: 'lilnasx',
+          password: 'montero',
+          name: 'Lil Nas X',
+        });
+
         // Log main test user out and in with new user
         cy.visit('http://localhost:3000');
         cy.contains('Log out').click();
         cy.login({ username: 'lilnasx', password: 'montero' });
 
-        cy.contains('Test blog').parent().find('button').click();
-        cy.contains('www.testblog.com/test-blog-post')
-          .parent()
-          .contains('troyboi'); // Check that belongs to other user
+        cy.contains('Test blog').parent().parent().as('blogEntry');
+        cy.get('@blogEntry').contains('View').click();
+        cy.get('@blogEntry').contains('troyboi'); // Check that belongs to other user
 
-        cy.contains('www.testblog.com/test-blog-post') // Press remove button
-          .parent()
-          .contains('Remove')
-          .should('not.exist');
+        // Remove button should not even be available
+        cy.get('@blogEntry').contains('Remove').should('not.exist');
       });
+
+      // it('blogs are ordered by likes', function () {});
     });
   });
 });
