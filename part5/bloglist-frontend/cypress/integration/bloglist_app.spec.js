@@ -1,12 +1,11 @@
 describe('Blog app', function () {
   beforeEach(function () {
     cy.request('POST', 'http://localhost:3003/api/testing/reset');
-    const user = {
+    cy.createUser({
       username: 'troyboi',
       name: 'Troy Henry',
       password: 'v!bez',
-    };
-    cy.request('POST', 'http://localhost:3003/api/users/', user);
+    });
     cy.visit('http://localhost:3000');
   });
 
@@ -51,7 +50,7 @@ describe('Blog app', function () {
       cy.contains('Test blog post by T.E. Ster');
     });
 
-    describe.only('and several blogs exist', function () {
+    describe('and several blogs exist', function () {
       beforeEach(function () {
         cy.createBlog({
           title: 'Test blog post',
@@ -82,6 +81,20 @@ describe('Blog app', function () {
 
         cy.contains('www.blog2.com/posts').parent().contains('Likes 1');
       });
+
+      it('User can delete a blog they created', function () {
+        cy.contains('Test blog').parent().find('button').click();
+        cy.contains('www.testblog.com/test-blog-post')
+          .parent()
+          .contains('Likes 0'); // View details
+
+        cy.contains('www.testblog.com/test-blog-post') // Press remove button
+          .parent()
+          .contains('Remove')
+          .click();
+      });
+
+      // it('User cannot delete blogs created by others', function () {});
     });
   });
 });
