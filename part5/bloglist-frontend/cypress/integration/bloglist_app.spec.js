@@ -1,6 +1,8 @@
 describe('Blog app', function () {
   beforeEach(function () {
-    cy.request('POST', 'http://localhost:3003/api/testing/reset');
+    cy.request('POST', 'http://localhost:3003/api/testing/reset').then(() =>
+      console.log('DB reset')
+    );
     cy.createUser({
       username: 'troyboi',
       password: 'v!bez',
@@ -83,7 +85,7 @@ describe('Blog app', function () {
         cy.get('@blogEntry').contains('Remove').click();
       });
 
-      it('User cannot delete blogs created by others', function () {
+      it.skip('User cannot delete blogs created by others', function () {
         cy.createUser({
           username: 'lilnasx',
           password: 'montero',
@@ -103,7 +105,25 @@ describe('Blog app', function () {
         cy.get('@blogEntry').contains('Remove').should('not.exist');
       });
 
-      // it('blogs are ordered by likes', function () {});
+      it.only('blogs are ordered by likes', function () {
+        cy.contains('Second blog').parent().parent().as('blog2');
+        cy.get('@blog2').contains('View').click();
+        cy.get('@blog2').contains('Likes 0'); // View details
+        cy.get('@blog2').contains('Like').click(); // Press like button
+        cy.get('@blog2').contains('Hide').click();
+
+        cy.get('.blog-details').first().contains('Second blog');
+
+        cy.contains('Third blog').parent().parent().as('blog3');
+        cy.get('@blog3').contains('View').click();
+        cy.get('@blog3').contains('Likes 0'); // View details
+        cy.get('@blog3').contains('Like').click();
+        cy.get('@blog3').contains('Like').click();
+        cy.get('@blog3').contains('Hide').click();
+
+        cy.get('.blog-details').first().contains('Third blog');
+        cy.get('.blog-details').last().contains('Test blog');
+      });
     });
   });
 });
