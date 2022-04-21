@@ -50,5 +50,38 @@ describe('Blog app', function () {
       cy.get('#submit-create').click();
       cy.contains('Test blog post by T.E. Ster');
     });
+
+    describe.only('and several blogs exist', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Test blog post',
+          author: 'T.E. Ster',
+          url: 'www.testblog.com/test-blog-post',
+        });
+        cy.createBlog({
+          title: 'Second blog',
+          author: 'Another Author',
+          url: 'www.blog2.com/posts',
+        });
+        cy.createBlog({
+          title: 'Third blog',
+          author: 'Third Author',
+          url: 'www.blogthree.com/post',
+        });
+      });
+
+      it('User can like a blog', function () {
+        cy.contains('Second blog').parent().find('button').click();
+        cy.contains('www.blog2.com/posts').parent().contains('Likes 0'); // View details
+
+        cy.contains('www.blog2.com/posts') // Press like button
+          .parent()
+          .contains('Likes')
+          .find('button')
+          .click();
+
+        cy.contains('www.blog2.com/posts').parent().contains('Likes 1');
+      });
+    });
   });
 });
