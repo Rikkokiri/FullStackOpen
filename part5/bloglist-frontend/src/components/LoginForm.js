@@ -38,7 +38,9 @@ const LoginForm = ({ handleLogin }) => {
           id="password"
         />
       </div>
-      <button type="submit">Login</button>
+      <button id="submit-login" type="submit">
+        Login
+      </button>
     </form>
   );
 };
