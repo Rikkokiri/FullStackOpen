@@ -26,7 +26,8 @@
   "plugins": ["react", "jest", "cypress", "prettier"],
   "rules": {
     "prettier/prettier": "error",
-    "indent": ["error", 2],
+    // Indent of 2 spaces with SwitchCase set to 1 will indent case clauses with 2 spaces with respect to switch statements.
+    "indent": ["error", 2, { "SwitchCase": 1 }],
     "linebreak-style": ["error", "unix"],
     "quotes": ["error", "single"],
     "eqeqeq": "error",

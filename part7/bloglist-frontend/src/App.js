@@ -6,12 +6,13 @@ import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
+import { useDispatch } from 'react-redux';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
-  const [statusMessage, setStatusMessage] = useState(null);
   const blogFormRef = useRef();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     loadBlogs();
@@ -50,12 +51,14 @@ const App = () => {
   };
 
   const showNotification = (message, error = false, delay = 2500) => {
-    setStatusMessage({
-      msg: message,
-      error: error,
+    dispatch({
+      type: 'SET_NOTIFICATION',
+      data: { error: error, message: message },
     });
     setTimeout(() => {
-      setStatusMessage(null);
+      dispatch({
+        type: 'CLEAR_NOTIFICATION',
+      });
     }, delay);
   };
 
@@ -94,7 +97,7 @@ const App = () => {
     return (
       <div>
         <h1>Log in to the application</h1>
-        <Notification message={statusMessage} />
+        <Notification />
         <LoginForm handleLogin={handleLogin} />
       </div>
     );
@@ -103,7 +106,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      {statusMessage && <Notification message={statusMessage} />}
+      <Notification />
       <div>
         <span>{user.name ? user.name : user.username} logged in </span>
         <button onClick={handleLogout}>Log out</button>
