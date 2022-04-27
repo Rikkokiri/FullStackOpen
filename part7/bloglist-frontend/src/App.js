@@ -6,23 +6,20 @@ import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { initializeBlogs, addBlog } from './reducers/blogReducer';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  const blogsFromRedux = useSelector(({ blogs }) => {
+    return blogs.sort((a, b) => b.likes - a.likes);
+  });
   const [user, setUser] = useState(null);
   const blogFormRef = useRef();
   const dispatch = useDispatch();
 
   useEffect(() => {
-    loadBlogs();
-  }, []);
-
-  const loadBlogs = () => {
-    blogService
-      .getAll()
-      .then((blogs) => setBlogs(blogs.sort((a, b) => b.likes - a.likes)));
-  };
+    dispatch(initializeBlogs());
+  }, [dispatch]);
 
   useEffect(() => {
     const userJSON = window.localStorage.getItem('bloglistUser');
@@ -50,6 +47,7 @@ const App = () => {
     window.localStorage.removeItem('bloglistUser');
   };
 
+  // TODO: move implementation details to redux
   const showNotification = (message, error = false, delay = 2500) => {
     dispatch({
       type: 'SET_NOTIFICATION',
@@ -64,12 +62,11 @@ const App = () => {
 
   const createBlog = async (blogObject) => {
     try {
-      const returnedBlog = await blogService.create(blogObject);
+      dispatch(addBlog(blogObject));
       blogFormRef.current.toggleVisibility();
       showNotification(
-        `A new blog "${returnedBlog.title}" by ${returnedBlog.author} added`
+        `A new blog "${blogObject.title}" by ${blogObject.author} added`
       );
-      setBlogs(blogs.concat(returnedBlog));
     } catch (error) {
       console.log('Error creating a blog', error);
       showNotification(error.response.data.error, true, 5000);
@@ -83,13 +80,13 @@ const App = () => {
       user: blog.user.id,
       likes: blog.likes + 1,
     });
-    loadBlogs();
+    // loadBlogs();
   };
 
   const removeBlog = async (blog) => {
     if (window.confirm(`Remove "${blog.title}" by ${blog.author}?`)) {
       await blogService.remove(blog.id);
-      loadBlogs();
+      // loadBlogs();
     }
   };
 
@@ -115,7 +112,7 @@ const App = () => {
         <BlogForm createBlog={createBlog} />
       </Togglable>
       <br />
-      {blogs.map((blog) => (
+      {blogsFromRedux.map((blog) => (
         <Blog
           key={blog.id}
           blog={blog}
