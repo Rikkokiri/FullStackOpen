@@ -21,6 +21,7 @@ export const toNewPatient = ({
     ssn: parseStringProperty(ssn, 'ssn'),
     gender: parseGender(gender),
     occupation: parseStringProperty(occupation, 'occupation'),
+    entries: [],
   };
 
   return newPatient;
