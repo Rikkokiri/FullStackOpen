@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Blog from './components/Blog';
-import * as blogService from './services/blogs';
-import * as loginService from './services/login';
 import LoginForm from './components/LoginForm';
 import BlogForm from './components/BlogForm';
 import Notification from './components/Notification';
@@ -13,12 +11,13 @@ import {
   deleteBlog,
   likeBlog,
 } from './reducers/blogReducer';
+import { login, logout } from './reducers/userReducer';
 
 const App = () => {
   const blogs = useSelector(({ blogs }) => {
     return blogs.sort((a, b) => b.likes - a.likes);
   });
-  const [user, setUser] = useState(null);
+  const user = useSelector((state) => state.users.currentUser);
   const blogFormRef = useRef();
   const dispatch = useDispatch();
 
@@ -26,21 +25,9 @@ const App = () => {
     dispatch(initializeBlogs());
   }, [dispatch]);
 
-  useEffect(() => {
-    const userJSON = window.localStorage.getItem('bloglistUser');
-    if (userJSON) {
-      const parsedUser = JSON.parse(userJSON);
-      setUser(parsedUser);
-      blogService.setToken(parsedUser.token);
-    }
-  }, []);
-
   const handleLogin = async (username, password) => {
     try {
-      const user = await loginService.login({ username, password });
-      blogService.setToken(user.token);
-      setUser(user);
-      window.localStorage.setItem('bloglistUser', JSON.stringify(user));
+      dispatch(login(username, password));
     } catch (error) {
       showNotification(error.response.data.error, true);
       throw error;
@@ -48,8 +35,7 @@ const App = () => {
   };
 
   const handleLogout = () => {
-    setUser(null);
-    window.localStorage.removeItem('bloglistUser');
+    dispatch(logout());
   };
 
   // TODO: move implementation details to redux
