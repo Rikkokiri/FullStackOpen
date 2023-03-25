@@ -26,7 +26,7 @@ export function calculateBmi(height: number, weight: number): string {
   }
 }
 
-// console.log(calculateBmi(180, 74)); // should print the following message: Normal (healthy weight)
+console.log(calculateBmi(180, 74)); // should print the following message: Normal (healthy weight)
 
 // Read command line paramters:
 // const h: number = Number(process.argv[2]);

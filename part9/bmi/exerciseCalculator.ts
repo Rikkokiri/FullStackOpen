@@ -25,7 +25,7 @@ function calculateExercises(
   } else if (average >= 0.5 * target) {
     rating = 2;
     ratingDescription =
-      'You got over halfway to your goal! Good job but you can do better!';
+      'You got over halfway to your goal! Good job - but you can do even better!';
   }
 
   return {
