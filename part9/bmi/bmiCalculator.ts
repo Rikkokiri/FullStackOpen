@@ -1,3 +1,32 @@
+import { isNotNumber } from './utils';
+
+interface BMIParams {
+  height: number;
+  weight: number;
+}
+
+const parseArguments = (args: string[]): BMIParams => {
+  if (args.length < 4) throw new Error('Not enough arguments');
+  if (args.length > 4) throw new Error('Too many arguments');
+
+  if (!isNotNumber(args[2]) && !isNotNumber(args[3])) {
+    const parsedHeight = Number(args[2]);
+    const parsedWeight = Number(args[3]);
+    if (parsedHeight <= 0) {
+      throw new Error('Height must be larger than 0');
+    }
+    if (parsedWeight < 0) {
+      throw new Error('Weight cannot be a negative number');
+    }
+    return {
+      height: parsedHeight,
+      weight: parsedWeight,
+    };
+  } else {
+    throw new Error('Provided values must be numbers');
+  }
+};
+
 /**
  * Calculates BMI and returns a messsage based on the classification of that BMI.
  * @param height    given height in centimeters
@@ -18,16 +47,25 @@ export function calculateBmi(height: number, weight: number): string {
   const bmi = weight / (heightInMeters * heightInMeters);
 
   if (bmi <= 18.5) {
-    return 'Underweight (unhealthy weight)';
+    return 'Underweight';
   } else if (bmi <= 22.9) {
-    return 'Normal (healthy weight)';
+    return 'Normal';
   } else {
-    return 'Overweight (unhealthy weight)';
+    return 'Overweight';
   }
 }
 
-console.log(calculateBmi(180, 74)); // should print the following message: Normal (healthy weight)
+// Hard-coded input for ex. 9.1
+// console.log(calculateBmi(180, 74)); // should print the following message: Normal (healthy weight)
 
-// Read command line paramters:
-// const h: number = Number(process.argv[2]);
-// const w: number = Number(process.argv[2]);
+// Ex. 9.3: Provided values via command line
+try {
+  const { height, weight } = parseArguments(process.argv);
+  console.log(calculateBmi(height, weight));
+} catch (error: unknown) {
+  let errorMsg = 'Something went wrong';
+  if (error instanceof Error) {
+    errorMsg += error.message ? `: ${error.message}` : '.';
+  }
+  console.log(errorMsg);
+}
