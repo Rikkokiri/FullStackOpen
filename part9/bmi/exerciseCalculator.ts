@@ -1,30 +1,31 @@
-import { parseNumberArray } from "./utils"
+import { parseNumberArray } from './utils';
 
 interface ExerciseParams {
-  hours: number[]
-  target: number
+  hours: number[];
+  target: number;
 }
 
 const parseExerciseParams = (args: string[]): ExerciseParams => {
-  if (args.length < 4) throw new Error('Not enough arguments')
-  if (args.length > 1002) throw new Error('Exceeded maximum number of arguments')
+  if (args.length < 4) throw new Error('Not enough arguments');
+  if (args.length > 1002)
+    throw new Error('Exceeded maximum number of arguments');
 
-  
-  const inputs = args.slice(2)
-  const parsedNumbers = parseNumberArray(inputs)
-  
+  const inputs = args.slice(2);
+  const parsedNumbers = parseNumberArray(inputs);
+
   if (parsedNumbers !== undefined) {
-    const anyNegatives = parsedNumbers.some(num => num < 0)
-    if (anyNegatives) throw new Error('Neither target nor daily hours can be less than 0')
-    const [target, ...hours] = parsedNumbers
+    const anyNegatives = parsedNumbers.some((num) => num < 0);
+    if (anyNegatives)
+      throw new Error('Neither target nor daily hours can be less than 0');
+    const [target, ...hours] = parsedNumbers;
     return {
       hours: hours,
-      target: target
-    }
+      target: target,
+    };
   } else {
     throw new Error('Provided values must be numbers');
   }
-} 
+};
 
 interface IExerciseFeedback {
   periodLength: number;
@@ -65,7 +66,7 @@ const calculateExercises = (
     target: target,
     average: average,
   };
-}
+};
 
 // Hard-coded input for ex. 9.2
 // console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));

@@ -10,7 +10,7 @@ const isNotNumber = (input: unknown): boolean => {
  */
 const parseNumberArray = (arr: string[]): number[] | undefined => {
   const allAreNumbers = arr.every((v) => !isNotNumber(v));
-  if (!allAreNumbers) return undefined
+  if (!allAreNumbers) return undefined;
   return arr.map((v) => Number(v));
 };
 

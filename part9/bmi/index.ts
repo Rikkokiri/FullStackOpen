@@ -14,8 +14,8 @@ app.get('/hello', (_req, res) => {
 app.get('/bmi', (req, res) => {
   const { weight, height } = req.query;
   try {
-    const { parsedHeight, parsedWeight } = parseBMIParams([height, weight])
-    const bmi = calculateBmi(parsedHeight, parsedWeight );
+    const { parsedHeight, parsedWeight } = parseBMIParams([height, weight]);
+    const bmi = calculateBmi(parsedHeight, parsedWeight);
     res.send({
       weight: Number(weight),
       height: Number(height),
