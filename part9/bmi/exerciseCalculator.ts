@@ -1,3 +1,31 @@
+import { parseNumberArray } from "./utils"
+
+interface ExerciseParams {
+  hours: number[]
+  target: number
+}
+
+const parseExerciseParams = (args: string[]): ExerciseParams => {
+  if (args.length < 4) throw new Error('Not enough arguments')
+  if (args.length > 1002) throw new Error('Exceeded maximum number of arguments')
+
+  
+  const inputs = args.slice(2)
+  const parsedNumbers = parseNumberArray(inputs)
+  
+  if (parsedNumbers !== undefined) {
+    const anyNegatives = parsedNumbers.some(num => num < 0)
+    if (anyNegatives) throw new Error('Neither target nor daily hours can be less than 0')
+    const [target, ...hours] = parsedNumbers
+    return {
+      hours: hours,
+      target: target
+    }
+  } else {
+    throw new Error('Provided values must be numbers');
+  }
+} 
+
 interface IExerciseFeedback {
   periodLength: number;
   trainingDays: number;
@@ -8,10 +36,10 @@ interface IExerciseFeedback {
   average: number;
 }
 
-function calculateExercises(
+const calculateExercises = (
   hours: number[],
   target: number,
-): IExerciseFeedback {
+): IExerciseFeedback => {
   const sum = hours.reduce((prev, current) => prev + current, 0);
   const average = hours.length ? sum / hours.length : 0;
 
@@ -39,10 +67,8 @@ function calculateExercises(
   };
 }
 
-// const targ: number = Number(process.argv[2]);
-
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
-
+// Hard-coded input for ex. 9.2
+// console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
 /* ...which should return:
 {
   periodLength: 7,
@@ -54,3 +80,15 @@ console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2));
   average: 1.9285714285714286,
 };
  */
+
+// Ex. 9.3: Provided values via command line
+try {
+  const { hours, target } = parseExerciseParams(process.argv);
+  console.log(calculateExercises(hours, target));
+} catch (error: unknown) {
+  let errorMsg = 'Something went wrong';
+  if (error instanceof Error) {
+    errorMsg += error.message ? `: ${error.message}` : '.';
+  }
+  console.log(errorMsg);
+}
