@@ -1,17 +1,17 @@
 import { isNotNumber } from './utils';
 
 interface BMIParams {
-  height: number;
-  weight: number;
+  parsedHeight: number;
+  parsedWeight: number;
 }
 
-const parseArguments = (args: string[]): BMIParams => {
-  if (args.length < 4) throw new Error('Not enough arguments');
-  if (args.length > 4) throw new Error('Too many arguments');
+export const parseBMIParams = (args: (string | unknown)[]): BMIParams => {
+  if (args.length < 2) throw new Error('Not enough arguments');
+  if (args.length > 2) throw new Error('Too many arguments');
 
-  if (!isNotNumber(args[2]) && !isNotNumber(args[3])) {
-    const parsedHeight = Number(args[2]);
-    const parsedWeight = Number(args[3]);
+  if (!isNotNumber(args[0]) && !isNotNumber(args[1])) {
+    const parsedHeight = Number(args[0]);
+    const parsedWeight = Number(args[1]);
     if (parsedHeight <= 0) {
       throw new Error('Height must be larger than 0');
     }
@@ -19,8 +19,8 @@ const parseArguments = (args: string[]): BMIParams => {
       throw new Error('Weight cannot be a negative number');
     }
     return {
-      height: parsedHeight,
-      weight: parsedWeight,
+      parsedHeight: parsedHeight,
+      parsedWeight: parsedWeight,
     };
   } else {
     throw new Error('Provided values must be numbers');
@@ -47,11 +47,11 @@ export function calculateBmi(height: number, weight: number): string {
   const bmi = weight / (heightInMeters * heightInMeters);
 
   if (bmi <= 18.5) {
-    return 'Underweight';
+    return 'Underweight (unhealthy weight)';
   } else if (bmi <= 22.9) {
-    return 'Normal';
+    return 'Normal (healthy weight)';
   } else {
-    return 'Overweight';
+    return 'Overweight (unhealthy weight)';
   }
 }
 
@@ -60,8 +60,8 @@ export function calculateBmi(height: number, weight: number): string {
 
 // Ex. 9.3: Provided values via command line
 try {
-  const { height, weight } = parseArguments(process.argv);
-  console.log(calculateBmi(height, weight));
+  const { parsedHeight, parsedWeight } = parseBMIParams(process.argv.slice(2));
+  console.log(calculateBmi(parsedHeight, parsedWeight));
 } catch (error: unknown) {
   let errorMsg = 'Something went wrong';
   if (error instanceof Error) {
