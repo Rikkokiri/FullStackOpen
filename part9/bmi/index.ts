@@ -42,7 +42,6 @@ app.post('/exercises', (req, res) => {
     : undefined;
 
   if (parsedDays !== undefined && !isNaN(Number(target))) {
-    console.log('Parsed days: ', parsedDays);
     const results = calculateExercises(parsedDays, Number(target));
     return res.send({ results });
   }
