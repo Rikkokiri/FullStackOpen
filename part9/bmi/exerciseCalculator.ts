@@ -6,8 +6,8 @@ interface ExerciseParams {
 }
 
 const parseExerciseParams = (args: string[]): ExerciseParams => {
-  if (args.length < 4) throw new Error('Not enough arguments');
-  if (args.length > 1002)
+  if (args.length < 2) throw new Error('Not enough arguments');
+  if (args.length > 1000)
     throw new Error('Exceeded maximum number of arguments');
 
   const inputs = args.slice(2);
@@ -37,7 +37,7 @@ interface IExerciseFeedback {
   average: number;
 }
 
-const calculateExercises = (
+export const calculateExercises = (
   hours: number[],
   target: number,
 ): IExerciseFeedback => {
@@ -84,7 +84,7 @@ const calculateExercises = (
 
 // Ex. 9.3: Provided values via command line
 try {
-  const { hours, target } = parseExerciseParams(process.argv);
+  const { hours, target } = parseExerciseParams(process.argv.slice(2));
   console.log(calculateExercises(hours, target));
 } catch (error: unknown) {
   let errorMsg = 'Something went wrong';
