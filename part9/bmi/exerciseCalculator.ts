@@ -5,9 +5,10 @@ interface ExerciseParams {
   target: number;
 }
 
+
 const parseExerciseParams = (args: string[]): ExerciseParams => {
-  if (args.length < 2) throw new Error('Not enough arguments');
-  if (args.length > 1000)
+  if (args.length < 4) throw new Error('Not enough arguments');
+  if (args.length > 1002)
     throw new Error('Exceeded maximum number of arguments');
 
   const inputs = args.slice(2);
@@ -84,7 +85,7 @@ export const calculateExercises = (
 
 // Ex. 9.3: Provided values via command line
 try {
-  const { hours, target } = parseExerciseParams(process.argv.slice(2));
+  const { hours, target } = parseExerciseParams(process.argv);
   console.log(calculateExercises(hours, target));
 } catch (error: unknown) {
   let errorMsg = 'Something went wrong';
