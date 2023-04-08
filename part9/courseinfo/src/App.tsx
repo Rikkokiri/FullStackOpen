@@ -1,4 +1,5 @@
 import React from 'react';
+import { CoursePart } from './types';
 
 const Header = ({ name }: { name: string }) => {
   return <h1>{name}</h1>;
@@ -14,8 +15,8 @@ const assertNever = (value: never): never => {
 };
 
 const Part = ({ part }: { part: CoursePart }) => {
-  switch (part.type) {
-    case 'normal':
+  switch (part.kind) {
+    case 'basic':
       return (
         <div className="course-part">
           <p className="part-name">
@@ -24,7 +25,7 @@ const Part = ({ part }: { part: CoursePart }) => {
           <p className="part-desc">{part.description}</p>
         </div>
       );
-    case 'groupProject':
+    case 'group':
       return (
         <div className="course-part">
           <p className="part-name">
@@ -33,14 +34,14 @@ const Part = ({ part }: { part: CoursePart }) => {
           <p>Project exercises {part.groupProjectCount}</p>
         </div>
       );
-    case 'submission':
+    case 'background':
       return (
         <div className="course-part">
           <p className="part-name">
             {part.name} {part.exerciseCount}
           </p>
           <p className="part-desc">{part.description}</p>
-          <p>Submit to {part.exerciseSubmissionLink}</p>
+          <p>Backgroubd material {part.backgroundMaterial}</p>
         </div>
       );
     case 'special':
@@ -50,7 +51,7 @@ const Part = ({ part }: { part: CoursePart }) => {
             {part.name} {part.exerciseCount}
           </p>
           <p className="part-desc">{part.description}</p>
-          <p>required skills: {part.requirements.join(', ')}</p>
+          <p>Required skills: {part.requirements.join(', ')}</p>
         </div>
       );
     default:
@@ -77,79 +78,49 @@ const Total = ({ parts }: { parts: CoursePart[] }) => {
   );
 };
 
-// new types
-interface CoursePartBase {
-  name: string;
-  exerciseCount: number;
-  type: string;
-}
-
-interface PartWithDescription extends CoursePartBase {
-  description: string;
-}
-
-interface CourseNormalPart extends PartWithDescription {
-  type: 'normal';
-}
-interface CourseProjectPart extends CoursePartBase {
-  type: 'groupProject';
-  groupProjectCount: number;
-}
-
-interface CourseSubmissionPart extends PartWithDescription {
-  type: 'submission';
-  exerciseSubmissionLink: string;
-}
-
-interface CourseSpecialPart extends PartWithDescription {
-  type: 'special';
-  requirements: string[];
-}
-
-type CoursePart =
-  | CourseNormalPart
-  | CourseProjectPart
-  | CourseSubmissionPart
-  | CourseSpecialPart;
-
 const App = () => {
   const courseName = 'Half Stack application development';
   // this is the new coursePart variable
   const courseParts: CoursePart[] = [
     {
-      name: 'Fundamentals',
+      name: "Fundamentals",
       exerciseCount: 10,
-      description: 'This is the leisured course part',
-      type: 'normal',
+      description: "This is an awesome course part",
+      kind: "basic"
     },
     {
-      name: 'Advanced',
-      exerciseCount: 7,
-      description: 'This is the harded course part',
-      type: 'normal',
-    },
-    {
-      name: 'Using props to pass data',
+      name: "Using props to pass data",
       exerciseCount: 7,
       groupProjectCount: 3,
-      type: 'groupProject',
+      kind: "group"
     },
     {
-      name: 'Deeper type usage',
+      name: "Basics of type Narrowing",
+      exerciseCount: 7,
+      description: "How to go from unknown to string",
+      kind: "basic"
+    },
+    {
+      name: "Deeper type usage",
       exerciseCount: 14,
-      description: 'Confusing description',
-      exerciseSubmissionLink: 'https://fake-exercise-submit.made-up-url.dev',
-      type: 'submission',
+      description: "Confusing description",
+      backgroundMaterial: "https://type-level-typescript.com/template-literal-types",
+      kind: "background"
     },
     {
-      name: 'Backend development',
-      exerciseCount: 21,
-      description: 'Typing the backend',
-      requirements: ['nodejs', 'jest'],
-      type: 'special',
+      name: "TypeScript in frontend",
+      exerciseCount: 10,
+      description: "a hard part",
+      kind: "basic",
     },
+    {
+      name: "Backend development",
+      exerciseCount: 21,
+      description: "Typing the backend",
+      requirements: ["nodejs", "jest"],
+      kind: "special"
+    }
   ];
-
   return (
     <div>
       <Header name={courseName} />
