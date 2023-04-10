@@ -1,14 +1,12 @@
 import { useEffect, useState } from 'react';
-import { DiaryEntry, NewDiaryEntry, StatusMessage } from './types';
-import { createDiaryEntry, getAllDiaryEntries } from './diaryService';
-import axios from 'axios';
+import { DiaryEntry, StatusMessage } from './types';
+import { getAllDiaryEntries } from './diaryService';
+import { Entry } from './components/Entry';
+import { AddEntryForm } from './components/AddEntryForm';
+import { Notification } from './components/Notification';
 
 const App = () => {
-  const [entries, setEntries] = useState<DiaryEntry[]>();
-  const [date, setDate] = useState<string>('');
-  const [visibility, setVisibility] = useState<string>('');
-  const [weather, setWeather] = useState<string>('');
-  const [comment, setComment] = useState<string>('');
+  const [entries, setEntries] = useState<DiaryEntry[]>([]);
   const [statusMessage, setStatusMessage] = useState<StatusMessage | undefined>(
     undefined,
   );
@@ -27,86 +25,15 @@ const App = () => {
     }, delay);
   };
 
-  const createEntry = (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    const newEntry: NewDiaryEntry = {
-      date: date,
-      visibility: visibility,
-      weather: weather,
-      comment: comment,
-    };
-
-    createDiaryEntry(newEntry)
-      .then((data: DiaryEntry) => {
-        setEntries(entries?.concat(data));
-        showNotification('Successfully added a new entry!', false);
-      })
-      .catch((error) => {
-        if (axios.isAxiosError(error)) {
-          console.log(error.status);
-          console.error(error.response?.data);
-          showNotification(error.response?.data ?? 'An error occurred', true);
-        } else {
-          console.error(error);
-          showNotification('An error occurred', true);
-        }
-      });
-
-    setDate('');
-    setVisibility('');
-    setWeather('');
-    setComment('');
-  };
-
   return (
     <main>
       <h1>Flight Diary</h1>
-      {statusMessage && (
-        <div>
-          <p className={statusMessage.error ? 'error-toast' : 'success-toast'}>
-            {statusMessage.msg}
-          </p>
-        </div>
-      )}
-      <form onSubmit={createEntry}>
-        <h2>Add new entry</h2>
-        <div className="input-wrapper">
-          <label htmlFor="entry-date">Date</label>
-          <input
-            id="entry-date"
-            type="date"
-            value={date}
-            onChange={(event) => setDate(event.target.value)}
-          ></input>
-        </div>
-        <div className="input-wrapper">
-          <label htmlFor="visibility">Visibility</label>
-          <input
-            id="visibility"
-            type="text"
-            value={visibility}
-            onChange={(event) => setVisibility(event.target.value)}
-          ></input>
-        </div>
-        <div className="input-wrapper">
-          <label htmlFor="weather">Weather</label>
-          <input
-            id="weather"
-            type="text"
-            value={weather}
-            onChange={(event) => setWeather(event.target.value)}
-          ></input>
-        </div>
-        <div className="input-wrapper">
-          <label htmlFor="comment">Comment</label>
-          <textarea
-            id="comment"
-            value={comment}
-            onChange={(event) => setComment(event.target.value)}
-          ></textarea>
-        </div>
-        <button type="submit">Add</button>
-      </form>
+      <Notification message={statusMessage} />
+      <AddEntryForm
+        entries={entries}
+        setEntries={setEntries}
+        showNotification={showNotification}
+      />
       <section>
         <h2>Diary entries</h2>
         <ul className="entry-list">
@@ -116,18 +43,6 @@ const App = () => {
         </ul>
       </section>
     </main>
-  );
-};
-
-const Entry = ({ entry }: { entry: DiaryEntry }) => {
-  return (
-    <li className="diary-entry" key={entry.id}>
-      <h3>{entry.date}</h3>
-      <div>
-        <p>Visibility: {entry.visibility}</p>
-        <p>Weather: {entry.weather}</p>
-      </div>
-    </li>
   );
 };
 

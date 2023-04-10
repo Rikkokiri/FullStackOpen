@@ -63,10 +63,33 @@ button[type="submit"] {
   
 }
 
+/* Notification aka toast */
+
 .success-toast {
   color: green;
 }
 
 .error-toast {
   color: red;
+}
+
+/* Radio group */
+fieldset.radio-group {
+  border: none;
+  margin: 0;
+  padding-left: 0;
+  margin-bottom: 1.25rem;
+  margin-top: 1.25rem;
+}
+
+.radio-group legend {
+  margin-bottom: 0.25rem;
+}
+
+.radio-options {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1.5rem;
 }
