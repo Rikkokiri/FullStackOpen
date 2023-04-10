@@ -26,3 +26,8 @@ export interface NewDiaryEntry {
   visibility: string;
   comment: string;
 }
+
+export interface StatusMessage {
+  msg: string;
+  error: boolean;
+}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import { DiaryEntry, NewDiaryEntry } from './types';
+import { DiaryEntry, NewDiaryEntry, StatusMessage } from './types';
 import { createDiaryEntry, getAllDiaryEntries } from './diaryService';
+import axios from 'axios';
 
 const App = () => {
   const [entries, setEntries] = useState<DiaryEntry[]>();
@@ -8,10 +9,23 @@ const App = () => {
   const [visibility, setVisibility] = useState<string>('');
   const [weather, setWeather] = useState<string>('');
   const [comment, setComment] = useState<string>('');
+  const [statusMessage, setStatusMessage] = useState<StatusMessage | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
     getAllDiaryEntries().then((data: DiaryEntry[]) => setEntries(data));
   }, []);
+
+  const showNotification = (message: string, error = false, delay = 5000) => {
+    setStatusMessage({
+      msg: message,
+      error: error,
+    });
+    setTimeout(() => {
+      setStatusMessage(undefined);
+    }, delay);
+  };
 
   const createEntry = (event: React.SyntheticEvent) => {
     event.preventDefault();
@@ -22,9 +36,21 @@ const App = () => {
       comment: comment,
     };
 
-    createDiaryEntry(newEntry).then((data: DiaryEntry) => {
-      setEntries(entries?.concat(data));
-    });
+    createDiaryEntry(newEntry)
+      .then((data: DiaryEntry) => {
+        setEntries(entries?.concat(data));
+        showNotification('Successfully added a new entry!', false);
+      })
+      .catch((error) => {
+        if (axios.isAxiosError(error)) {
+          console.log(error.status);
+          console.error(error.response?.data);
+          showNotification(error.response?.data ?? 'An error occurred', true);
+        } else {
+          console.error(error);
+          showNotification('An error occurred', true);
+        }
+      });
 
     setDate('');
     setVisibility('');
@@ -35,6 +61,13 @@ const App = () => {
   return (
     <main>
       <h1>Flight Diary</h1>
+      {statusMessage && (
+        <div>
+          <p className={statusMessage.error ? 'error-toast' : 'success-toast'}>
+            {statusMessage.msg}
+          </p>
+        </div>
+      )}
       <form onSubmit={createEntry}>
         <h2>Add new entry</h2>
         <div className="input-wrapper">

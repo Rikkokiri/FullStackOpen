@@ -62,3 +62,11 @@ button[type="submit"] {
   padding: 0.25rem 1rem;
   
 }
+
+.success-toast {
+  color: green;
+}
+
+.error-toast {
+  color: red;
+}
