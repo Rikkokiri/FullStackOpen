@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, handleLike, removeBlog, user }) => {
-  const [showDetails, setShowDetails] = useState(false);
-  const allowDelete = blog.user.username === user.username;
+  const [showDetails, setShowDetails] = useState(false)
+  const allowDelete = blog.user.username === user.username
 
   const toggleDetails = () => {
-    setShowDetails((prev) => !prev);
-  };
+    setShowDetails((prev) => !prev)
+  }
 
   return (
     <div className="blog-details">
@@ -33,12 +33,12 @@ const Blog = ({ blog, handleLike, removeBlog, user }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   handleLike: PropTypes.func.isRequired,
-};
+}
 
-export default Blog;
+export default Blog
