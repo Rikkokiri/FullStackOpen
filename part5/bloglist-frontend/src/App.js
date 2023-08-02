@@ -8,6 +8,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 
 const App = () => {
+  const LOCAL_STORAGE_USER = 'bloglistUser'
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const [statusMessage, setStatusMessage] = useState(null)
@@ -24,7 +25,7 @@ const App = () => {
   }, [])
 
   useEffect(() => {
-    const userJSON = window.localStorage.getItem('bloglistUser')
+    const userJSON = window.localStorage.getItem(LOCAL_STORAGE_USER)
     if (userJSON) {
       const parsedUser = JSON.parse(userJSON)
       setUser(parsedUser)
@@ -37,7 +38,7 @@ const App = () => {
       const user = await loginService.login({ username, password })
       blogService.setToken(user.token)
       setUser(user)
-      window.localStorage.setItem('bloglistUser', JSON.stringify(user))
+      window.localStorage.setItem(LOCAL_STORAGE_USER, JSON.stringify(user))
     } catch (error) {
       showNotification(error.response.data.error, true)
       throw error
@@ -46,7 +47,7 @@ const App = () => {
 
   const handleLogout = () => {
     setUser(null)
-    window.localStorage.removeItem('bloglistUser')
+    window.localStorage.removeItem(LOCAL_STORAGE_USER)
   }
 
   const showNotification = (message, error = false, delay = 2500) => {
@@ -66,7 +67,7 @@ const App = () => {
       showNotification(
         `A new blog "${returnedBlog.title}" by ${returnedBlog.author} added`
       )
-      setBlogs(blogs.concat(returnedBlog))
+      loadBlogs()
     } catch (error) {
       console.log('Error creating a blog', error)
       showNotification(error.response.data.error, true, 5000)
