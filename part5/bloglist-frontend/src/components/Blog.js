@@ -10,35 +10,54 @@ const Blog = ({ blog, handleLike, removeBlog, user }) => {
   }
 
   return (
-    <div className="blog-details">
+    <li className="blog-entry">
       <div className="blog-summaryrow">
-        <span>
-          {blog.title} by {blog.author}{' '}
+        <span className="blog-entry-heading">
+          <span className="blog-title">{blog.title}</span>
+          <br /> <span className="blog-author">by {blog.author} </span>
         </span>
-        <button onClick={toggleDetails}>{showDetails ? 'Hide' : 'View'}</button>
+        <button onClick={toggleDetails} className="blog-view button-dark-solid">
+          {showDetails ? 'Hide' : 'View'}
+        </button>
       </div>
       {showDetails && (
-        <div>
+        <div className="blog-details">
           <a href={blog.url} target="_blank" rel="noreferrer">
             {blog.url}
           </a>
-          <div className="blog-likes">
-            Likes {blog.likes}{' '}
-            <button onClick={() => handleLike(blog)}>Like</button>
+
+          <div className="blog-submitter">
+            Submitted by: {blog.user.username}
           </div>
-          <div>{blog.user.username}</div>
-          {allowDelete && (
-            <button onClick={() => removeBlog(blog)}>Remove</button>
-          )}
+          <div className="blog-actions">
+            <div className="blog-likes">
+              <span className="blog-like-count">
+                {blog.likes} {blog.likes === 1 ? 'like' : 'likes'}
+              </span>
+              <button onClick={() => handleLike(blog)} className="blog-like">
+                Like
+              </button>
+            </div>
+            {allowDelete && (
+              <button
+                className="blog-remove button-dark-solid"
+                onClick={() => removeBlog(blog)}
+              >
+                Remove
+              </button>
+            )}
+          </div>
         </div>
       )}
-    </div>
+    </li>
   )
 }
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   handleLike: PropTypes.func.isRequired,
+  removeBlog: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
 }
 
 export default Blog

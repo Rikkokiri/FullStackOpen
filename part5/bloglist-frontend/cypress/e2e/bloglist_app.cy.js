@@ -1,6 +1,6 @@
 describe('Blog app', function () {
   beforeEach(function () {
-    cy.request('POST', 'http://localhost:3003/api/testing/reset').then(() =>
+    cy.request('POST', `${Cypress.env('BACKEND')}/testing/reset`).then(() =>
       console.log('DB reset')
     )
     cy.createUser({
@@ -8,16 +8,25 @@ describe('Blog app', function () {
       password: 'v!bez',
       name: 'Troy Henry',
     })
-    cy.visit('http://localhost:3000')
+    cy.visit('')
   })
 
+  /**
+   * 5.17 - Configure Cypress for your project. Make a test for checking
+   * that the application displays the login form by default.
+   */
   it('Login form is shown', function () {
-    cy.contains('username')
-    cy.contains('password')
-    cy.contains('Login')
+    cy.get('.form-login').should('be.visible')
+    cy.get('#username').should('be.visible')
+    cy.get('#password').should('be.visible')
+    cy.get('#submit-login').should('be.visible').contains('Login')
     cy.contains('New blog').should('not.exist')
   })
 
+  /**
+   * 5.18 - Make tests for logging in. Test both successful and unsuccessful
+   * login attempts. Make a new user in the beforeEach block for the tests.
+   */
   describe('Login', function () {
     it('succeeds with correct credentials', function () {
       cy.get('#username').type('troyboi')
@@ -33,8 +42,13 @@ describe('Blog app', function () {
       cy.get('#submit-login').click()
 
       cy.contains('Invalid username or password')
-      cy.get('.error').should('contain', 'Invalid username or password')
-      cy.get('.error').should('have.css', 'color', 'rgb(139, 0, 0)')
+      // Optional bonus exercise: Check that the notification shown with unsuccessful
+      // login is displayed red.
+      cy.get('.error')
+        .should('contain', 'Invalid username or password')
+        .should('have.css', 'color', 'rgb(136, 9, 6)')
+
+      cy.should('not.contain', 'Troy Henry logged in')
     })
   })
 
@@ -47,12 +61,17 @@ describe('Blog app', function () {
       cy.contains('Log out').click()
     })
 
+    /**
+     * 5.19 - Make a test that verifies a logged-in user can create a new blog.
+     */
     it('A blog can be created', function () {
       cy.contains('New blog').click()
       cy.get('#title').type('Test blog post')
       cy.get('#author').type('T.E. Ster')
       cy.get('#url').type('www.testblog.com/test-blog-post')
       cy.get('#submit-create').click()
+
+      // The test has to ensure that a new blog is added to the list of all blogs.
       cy.contains('Test blog post by T.E. Ster')
     })
 
@@ -75,22 +94,32 @@ describe('Blog app', function () {
         })
       })
 
+      /**
+       * 5.20 - Make a test that confirms users can like a blog.
+       */
       it('User can like a blog', function () {
-        cy.contains('Second blog').parent().parent().as('blogEntry')
+        cy.contains('.blog-entry', 'Second blog').as('blogEntry')
         cy.get('@blogEntry').contains('View').click()
-        cy.get('@blogEntry').contains('Likes 0') // View details
+        cy.get('@blogEntry').contains('0 likes')
         cy.get('@blogEntry').contains('Like').click() // Press like button
-        cy.get('@blogEntry').contains('Likes 1')
+        cy.get('@blogEntry').contains('1 like')
       })
 
+      /**
+       * 5.21 - Make a test for ensuring that the user who created a blog can delete it.
+       */
       it('User can delete a blog they created', function () {
-        cy.contains('Test blog').parent().parent().as('blogEntry')
+        cy.contains('.blog-entry', 'Test blog').as('blogEntry')
         cy.get('@blogEntry').contains('View').click() // Reveal details
         cy.get('@blogEntry').contains('Remove').click()
       })
 
+      /**
+       * 5.22 - Make a test for ensuring that only the creator
+       * can see the delete button of a blog, not anyone else.
+       */
       it('User cannot delete blogs created by others', function () {
-        cy.visit('http://localhost:3000/')
+        cy.visit('/')
         cy.contains('Log out').click()
 
         cy.createUser({
@@ -99,10 +128,10 @@ describe('Blog app', function () {
           name: 'Lil Nas X',
         })
 
-        // Log main test user out and in with new user
+        // Log main test user out and log in with new user
         cy.login({ username: 'lilnasx', password: 'montero' })
 
-        cy.contains('Test blog').parent().parent().as('blogEntry')
+        cy.contains('.blog-entry', 'Test blog').as('blogEntry')
         cy.get('@blogEntry').contains('View').click()
         cy.get('@blogEntry').contains('troyboi') // Check that belongs to other user
 
@@ -110,26 +139,31 @@ describe('Blog app', function () {
         cy.get('@blogEntry').contains('Remove').should('not.exist')
       })
 
+      /**
+       * 5.23 - Make a test that checks that the blogs are ordered according to
+       * likes with the blog with the most likes being first.
+       */
       it('blogs are ordered by likes', function () {
-        cy.contains('Second blog').parent().parent().as('blog2')
+        cy.contains('.blog-entry', 'Second blog').as('blog2')
         cy.get('@blog2').contains('View').click()
-        cy.get('@blog2').contains('Likes 0') // View details
-        cy.get('@blog2').contains('Like').click() // Press like button
-        cy.get('@blog2').contains('Likes 1') // View details
+        cy.get('@blog2').contains('0 likes')
+        cy.get('@blog2').contains('Like').click()
+        cy.get('@blog2').contains('1 like')
         cy.get('@blog2').contains('Hide').click()
 
-        cy.get('.blog-details').first().contains('Second blog')
+        cy.get('.blog-entry').first().contains('Second blog')
 
-        cy.contains('Third blog').parent().parent().as('blog3')
+        cy.contains('.blog-entry', 'Third blog').as('blog3')
         cy.get('@blog3').contains('View').click()
-        cy.get('@blog3').contains('Likes 0') // View details
+        cy.get('@blog3').contains('0 likes')
         cy.get('@blog3').contains('Like').click()
+        cy.get('@blog3').contains('1 like')
         cy.get('@blog3').contains('Like').click()
-        cy.get('@blog3').contains('Likes 2') // View details
+        cy.get('@blog3').contains('2 likes')
         cy.get('@blog3').contains('Hide').click()
 
-        cy.get('.blog-details').first().contains('Third blog')
-        cy.get('.blog-details').last().contains('Test blog')
+        cy.get('.blog-entry').first().contains('Third blog')
+        cy.get('.blog-entry').last().contains('Test blog')
       })
     })
   })

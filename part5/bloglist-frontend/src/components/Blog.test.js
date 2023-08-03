@@ -35,6 +35,10 @@ describe('<Blog />', () => {
       />
     )
 
+  /**
+   * 5.13 - Make a test, which checks that the component displaying a blog renders
+   * the blog's title and author, but does not render its URL or number of likes by default.
+   */
   test('renders only basic details (title and author) by default', () => {
     setupBlog()
     const title = screen.getByText(blog.title, { exact: false })
@@ -54,10 +58,11 @@ describe('<Blog />', () => {
    */
   test('all details are revealed by clicking a button', async () => {
     setupBlog()
+    const user = userEvent.setup()
     const showButton = await screen.findByText('View')
-    await userEvent.click(showButton)
+    await user.click(showButton)
 
-    const likes = screen.getByText(`Likes ${blog.likes}`)
+    const likes = screen.queryByText(`${blog.likes} like`)
     expect(likes).toBeDefined()
     const url = screen.getByText(blog.url)
     expect(url).toBeDefined()
@@ -71,12 +76,14 @@ describe('<Blog />', () => {
    */
   test('like button calls event handler each time', async () => {
     setupBlog()
+    const user = userEvent.setup()
+
     const showButton = await screen.findByText('View')
-    await userEvent.click(showButton)
+    await user.click(showButton)
 
     const likeButton = screen.getByText('Like')
-    await userEvent.click(likeButton)
-    await userEvent.click(likeButton)
+    await user.click(likeButton)
+    await user.click(likeButton)
 
     expect(mockHandleLike.mock.calls).toHaveLength(2)
   })

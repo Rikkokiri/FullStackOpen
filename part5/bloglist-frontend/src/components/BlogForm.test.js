@@ -12,6 +12,7 @@ describe('<BlogForm />', () => {
    */
   test('event handler is called on form submit', async () => {
     const mockCreateBlog = jest.fn()
+    const user = userEvent.setup()
 
     render(<BlogForm createBlog={mockCreateBlog} />)
 
@@ -20,10 +21,10 @@ describe('<BlogForm />', () => {
     const urlInput = screen.getByLabelText('Url')
     const createButton = screen.getByText('Create')
 
-    await userEvent.type(titleInput, 'Title of the blog')
-    await userEvent.type(authorInput, 'Example Author')
-    await userEvent.type(urlInput, 'www.exampleblog.com/new-post')
-    await userEvent.click(createButton)
+    await user.type(titleInput, 'Title of the blog')
+    await user.type(authorInput, 'Example Author')
+    await user.type(urlInput, 'www.exampleblog.com/new-post')
+    await user.click(createButton)
 
     expect(mockCreateBlog.mock.calls).toHaveLength(1)
     expect(mockCreateBlog.mock.calls[0][0].title).toBe('Title of the blog')

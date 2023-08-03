@@ -1,14 +1,35 @@
 h1 {
+  font-size: 2.5rem;
   margin-top: 0.5rem;
+  color: #243010;
 }
 
 body {
-  padding: 0.5rem 1rem;
+  padding: 1rem 1.5rem;
+  font-family: 'Montserrat', sans-serif;
+  background: #C9E4C9;
+  max-width: 1500px;
+  margin: 0 auto;
 }
+
+a {
+  color: #448844;
+}
+
+a:visited {
+  color: #224422;
+}
+
+a:hover, a:focus {
+  color: #7DB800;
+}
+
+/** --- Form elements --- */
 
 label {
   display: inline-block;
-  width: 3.5rem;
+  min-width: 6rem;
+  margin-right: 0.5rem;
 }
 
 input {
@@ -16,13 +37,6 @@ input {
   padding: 0.25rem;
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
-}
-
-button {
-  border: 1px solid black;
-  border-radius: 0;
-  font-size: 0.9rem;
-  padding: 0.25rem 0.5rem;
 }
 
 form button,
@@ -50,41 +64,147 @@ li button {
   width: 4.5rem;
 }
 
+/* Generic button styles */
+
+button {
+  border: 1px solid #0a4736;
+  border-radius: 0.2rem;
+  padding: 0.25rem 1rem;
+  height: fit-content;
+  min-width: 3rem;
+
+  /* Default button style is light and bright */
+  background:  #daff8d;
+  color: #243010;
+}
+
+button:hover, button:focus {
+  background-color: #CBFF5C;
+  border-color: #127D5F;
+}
+
+.button-dark-solid {
+  background-color: #0a4736;
+  color: white;
+}
+
+.button-dark-solid:hover, .button-dark-solid:focus {
+  background-color: #127D5F;
+  color: white;
+  border-color: #0a4736;
+}
+
+/* --- Status messages --- */ 
+
+/*  */
+
 .status,
 .error {
   border-width: 3px;
   border-style: solid;
+  border-radius: 0.25rem;
   display: inline-block;
   font-size: 1.2rem;
-  padding: 0.4rem 2rem;
+  padding: 0.4rem 1.5rem;
+  margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
+/* #243010 */
+
 .status {
-  border-color: lightseagreen;
-  background-color: rgba(169, 255, 201, 0.5);
-  color: rgb(0, 104, 99);
+  border-color: #305F30;
+  background-color: #AED6AE;  /* rgba(169, 255, 201, 0.5); */
+  color: #224422;
 }
 
 .error {
-  border-color: rgb(139, 0, 0);
-  background-color: rgb(248, 211, 211);
-  color: darkred;
+  border-color: #880906;
+  background-color: #E4B1AB;
+  color: rgb(136, 9, 6);
 }
 
-.blog-details {
-  margin: 0.3rem 0;
-  padding: 0.5rem;
-  border: 1px solid grey;
+
+/* --- App heading and user details section --- */
+
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;  
 }
 
-.blog-details button {
-  padding: 0.1rem 0.25rem;
+.app-heading {
+  margin-bottom: 0.5rem
+}
+
+.logged-in-details {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* --- Blog list and blog items --- */
+
+.blog-list {
+  margin-top: 2rem;
+  list-style: none;
+}
+
+.blog-entry-heading {
+  font-size: 1rem;
+}
+
+.blog-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #243010;
+}
+
+.blog-author {
+  color: rgb(116, 110, 110);
+  font-style: italic;
+}
+
+.blog-entry {
+  text-align: left;
+  margin: 1rem 0;
+  padding: 0.75rem 0.75rem;
+  border: 1px solid #0a4736;
+  border-radius: 0.25rem;
+  background-color: #fdfdfd;
+}
+
+.blog-entry button {
+  padding: 0.2rem 0.5rem;
   margin: 0.1rem 0.2rem;
+  font-size: 0.85rem;
 }
 
 .blog-summaryrow {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: top;
+}
+
+.blog-details {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: auto 0;
+}
+
+.blog-actions {
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.blog-likes {
+  align-self: flex-end;
+}
+
+.blog-like-count {
+  margin-right: 0.5rem;
 }

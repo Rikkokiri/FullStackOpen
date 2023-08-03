@@ -17,9 +17,9 @@ const LoginForm = ({ handleLogin }) => {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="form-login">
+    <form onSubmit={handleSubmit} className="form-login" data-cy="login-form">
       <div>
-        <label htmlFor="username">username </label>
+        <label htmlFor="username">Username </label>
         <input
           type="text"
           value={username}
@@ -29,7 +29,7 @@ const LoginForm = ({ handleLogin }) => {
         />
       </div>
       <div>
-        <label htmlFor="password">password </label>
+        <label htmlFor="password">Password </label>
         <input
           type="password"
           value={password}
