@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["noreferrer", "reduxjs", "Togglable"]
+  "cSpell.words": ["noreferrer", "reduxjs", "Togglable"],
+  "editor.formatOnSave": true
 }
