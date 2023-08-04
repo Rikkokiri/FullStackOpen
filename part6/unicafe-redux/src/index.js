@@ -47,9 +47,18 @@ const App = () => {
         reset stats
       </button>
       <div className="statsContainer">
-        <div>good {store.getState().good}</div>
-        <div>ok {store.getState().ok}</div>
-        <div>bad {store.getState().bad}</div>
+        <div>
+          <div>good</div>
+          <div>{store.getState().good}</div>
+        </div>
+        <div>
+          <div>ok</div>
+          <div>{store.getState().ok}</div>
+        </div>
+        <div>
+          <div>bad</div>
+          <div>{store.getState().bad}</div>
+        </div>
       </div>
     </div>
   )
