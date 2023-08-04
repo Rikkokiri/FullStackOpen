@@ -1,5 +1,5 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { createStore } from 'redux'
 import reducer from './reducer'
 import './index.css'
@@ -64,8 +64,10 @@ const App = () => {
   )
 }
 
+const root = createRoot(document.getElementById('root'))
+
 const renderApp = () => {
-  ReactDOM.render(<App />, document.getElementById('root'))
+  root.render(<App />)
 }
 
 renderApp()
