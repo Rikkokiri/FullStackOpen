@@ -1,6 +1,13 @@
 import * as anecdoteService from '../services/anecdotes'
 
 const anecdoteReducer = (state = [], action) => {
+  /**
+   * 6.3 - Implement the functionality for voting anecdotes.
+   * The number of votes must be saved to a Redux store.
+   *
+   * 6.4 - Implement the functionality for adding new anecdotes.
+   * You can keep the form uncontrolled like we did earlier.
+   */
   switch (action.type) {
     case 'ADD_NEW': {
       return [...state, action.data]
@@ -23,6 +30,11 @@ const anecdoteReducer = (state = [], action) => {
   }
 }
 
+/**
+ * 6.6 - If you haven't done so already, separate the creation of action-objects to
+ * action creator-functions and place them in the src/reducers/anecdoteReducer.js file,
+ * so do what we have been doing since the chapter action creators.
+ */
 export const voteForAnecdote = (id) => {
   return async (dispatch) => {
     const data = await anecdoteService.addVote(id)

@@ -3,6 +3,10 @@ import { connect } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
+/**
+ * 6.7 - Separate the creation of new anecdotes into a component called AnecdoteForm.
+ * Move all logic for creating a new anecdote into this new component.
+ */
 const AnecdoteForm = (props) => {
   const addAnecdote = async (event) => {
     event.preventDefault()
@@ -19,7 +23,7 @@ const AnecdoteForm = (props) => {
         <div>
           <input name="anecdote" />
         </div>
-        <button>create</button>
+        <button>Create</button>
       </form>
     </>
   )
