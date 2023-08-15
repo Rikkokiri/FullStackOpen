@@ -1,6 +1,9 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { voteForAnecdote } from '../reducers/anecdoteReducer'
+import {
+  voteForAnecdote,
+  selectFilteredSortedAnecdotes,
+} from '../reducers/anecdoteReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
 /**
@@ -9,18 +12,7 @@ import { setNotification } from '../reducers/notificationReducer'
  * this new component.
  */
 const AnecdoteList = () => {
-  const anecdotes = useSelector(({ anecdotes, filter }) => {
-    // 6.5 - Make sure that the anecdotes are ordered by the number of votes.
-    const sorted = [...anecdotes].sort((a, b) => b.votes - a.votes)
-    if (filter === '') {
-      return sorted
-    }
-
-    // 6.9 - Implement filtering for the anecdotes that are displayed to the user.
-    return sorted.filter((a) =>
-      a.content.toLowerCase().includes(filter.toLowerCase())
-    )
-  })
+  const anecdotes = useSelector((state) => selectFilteredSortedAnecdotes(state))
 
   const dispatch = useDispatch()
   const vote = (id) => {

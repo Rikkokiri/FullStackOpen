@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createSelector } from '@reduxjs/toolkit'
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -57,6 +57,26 @@ const anecdoteSlice = createSlice({
     },
   },
 })
+
+const selectAnecdotes = (state) => state.anecdotes
+const selectFilter = (state) => state.filter
+
+export const selectFilteredSortedAnecdotes = createSelector(
+  selectAnecdotes,
+  selectFilter,
+  (anecdotes, filter) => {
+    // 6.5 - Make sure that the anecdotes are ordered by the number of votes.
+    const sorted = [...anecdotes].sort((a, b) => b.votes - a.votes)
+    if (filter === '') {
+      return sorted
+    }
+
+    // 6.9 - Implement filtering for the anecdotes that are displayed to the user.
+    return sorted.filter((a) =>
+      a.content.toLowerCase().includes(filter.toLowerCase())
+    )
+  }
+)
 
 export const { createAnecdote, voteForAnecdote } = anecdoteSlice.actions
 export default anecdoteSlice.reducer
