@@ -36,4 +36,4 @@ const mapDispatchToProps = {
 
 const ConnectedAnecdoteForm = connect(null, mapDispatchToProps)(AnecdoteForm)
 
-export default AnecdoteForm
+export default ConnectedAnecdoteForm
