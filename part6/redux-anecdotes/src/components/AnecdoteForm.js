@@ -8,24 +8,24 @@ import { setNotification } from '../reducers/notificationReducer'
  * Move all logic for creating a new anecdote into this new component.
  */
 const AnecdoteForm = (props) => {
-  const addAnecdote = async (event) => {
+  const addAnecdote = (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     props.createAnecdote(content)
-    props.setNotification(`You added new anecdote: '${content}'`, 10)
+    // props.setNotification(`You added new anecdote: '${content}'`, 10)
   }
 
   return (
-    <>
+    <section className="anecdote-form">
       <h2>Create new</h2>
       <form onSubmit={addAnecdote}>
         <div>
-          <input name="anecdote" />
+          <textarea name="anecdote" />
         </div>
         <button>Create</button>
       </form>
-    </>
+    </section>
   )
 }
 

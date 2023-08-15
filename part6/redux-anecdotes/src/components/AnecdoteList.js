@@ -8,15 +8,15 @@ import { setNotification } from '../reducers/notificationReducer'
  * called AnecdoteList. Move all logic related to voting for an anecdote to
  * this new component.
  */
-const AnecdoteList = (props) => {
+const AnecdoteList = () => {
   const anecdotes = useSelector(({ anecdotes, filter }) => {
-    /**
-     * 6.5 - Make sure that the anecdotes are ordered by the number of votes.
-     */
-    const sorted = anecdotes.sort((a, b) => b.votes - a.votes)
+    // 6.5 - Make sure that the anecdotes are ordered by the number of votes.
+    const sorted = [...anecdotes].sort((a, b) => b.votes - a.votes)
     if (filter === '') {
       return sorted
     }
+
+    // 6.9 - Implement filtering for the anecdotes that are displayed to the user.
     return sorted.filter((a) =>
       a.content.toLowerCase().includes(filter.toLowerCase())
     )
@@ -26,7 +26,7 @@ const AnecdoteList = (props) => {
   const vote = (id) => {
     dispatch(voteForAnecdote(id))
     const anecdote = anecdotes.find((a) => a.id === id)
-    dispatch(setNotification(`You voted for: '${anecdote.content}'`, 5))
+    // dispatch(setNotification(`You voted for: '${anecdote.content}'`, 5))
   }
 
   return (

@@ -3,17 +3,42 @@
 body {
     padding: 1rem 2rem;
     font-family: Helvetica, sans-serif;
+    color: #080E21;
+    background-color:  #EDFDF6;
 }
 
 h1 {
-    font-family: 'Bowlby One SC',
-    sans-serif;
+    font-family: 'Bowlby One SC', Helvetica, sans-serif;
     margin-bottom: 2rem;
     padding-bottom: 0.5rem;
     font-size: 2.5rem;
-    border-bottom: 1px solid teal;
+    border-bottom: 1px solid #008080;
+    color: #101C42;
     width: 75vw;
     min-width: 100px;
+}
+
+button {
+    background-color: #005252;
+    color: white;
+    border: none;
+    border-radius: 0.15rem;
+    padding: 0.25rem 0.75rem;
+    font-weight: bold;
+}
+
+button:hover, button:focus {
+    background-color: #008080;
+}
+
+.filter-anecdotes {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.filter-anecdotes label {
+    padding-right: 0.25rem;
+    font-weight: bold;
 }
 
 .anecdote-list {
@@ -29,4 +54,21 @@ h1 {
     padding-bottom: 0.5rem;
     font-style: italic;
     font-size: 1.1rem;
+}
+
+.notification {
+    border: 2px solid #008080;
+    background-color: #DDF1E9;
+    padding: 0.75rem;
+    max-width: 750px;
+}
+
+.anecdote-form {
+    margin-top: 3rem;
+}
+
+.anecdote-form textarea {
+    min-width: 40vw;
+    padding: 0.25rem;
+    margin-bottom: 1rem;
 }
