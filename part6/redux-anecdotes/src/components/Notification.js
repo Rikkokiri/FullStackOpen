@@ -1,18 +1,18 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 
-const Notification = (props) => {
-  return props.notification ? (
-    <div className="notification">{props.notification}</div>
+/**
+ * 6.12 - The application has a ready-made body for the Notification
+ * component. Extend the component so that it renders the message
+ * stored in the Redux store.
+ */
+
+const Notification = () => {
+  const notification = useSelector((state) => state.notification.content)
+
+  return notification ? (
+    <div className="notification">{notification}</div>
   ) : null
 }
 
-const mapStateToProps = (state) => {
-  return {
-    notification: state.notification.content,
-  }
-}
-
-const ConnectedNotification = connect(mapStateToProps, null)(Notification)
-
-export default ConnectedNotification
+export default Notification

@@ -7,7 +7,7 @@ import { setNotification } from '../reducers/notificationReducer'
  * 6.7 - Separate the creation of new anecdotes into a component called AnecdoteForm.
  * Move all logic for creating a new anecdote into this new component.
  */
-const AnecdoteForm = (props) => {
+const AnecdoteForm = () => {
   const dispatch = useDispatch()
 
   const addAnecdote = (event) => {
@@ -15,7 +15,7 @@ const AnecdoteForm = (props) => {
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     dispatch(createAnecdote(content))
-    // props.setNotification(`You added new anecdote: '${content}'`, 10)
+    dispatch(setNotification(`You added new anecdote: '${content}'`, 10))
   }
 
   return (
