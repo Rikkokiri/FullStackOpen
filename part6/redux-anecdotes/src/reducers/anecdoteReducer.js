@@ -1,3 +1,5 @@
+import { createSlice } from '@reduxjs/toolkit'
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -19,22 +21,60 @@ const asObject = (anecdote) => {
 
 const initialState = anecdotesAtStart.map(asObject)
 
-const anecdoteReducer = (state = initialState, action) => {
-  switch (action.type) {
+/**
+ * 6.11 - Change also the definition of the anecdote reducer and
+ * action creators to use the Redux Toolkit's createSlice function.
+ */
+
+const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState: initialState,
+  reducers: {
     /**
      * 6.4 - Implement the functionality for adding new anecdotes.
      * You can keep the form uncontrolled like we did earlier.
      */
+    createAnecdote(state, action) {
+      const content = action.payload
+      state.push({
+        content,
+        votes: 0,
+        id: getId(),
+      })
+    },
+    /**
+     * 6.3 - Implement the functionality for voting anecdotes.
+     * The number of votes must be saved to a Redux store.
+     */
+    voteForAnecdote(state, action) {
+      const id = action.payload
+      const anecdote = state.find((a) => a.id === id)
+      const updatedAnecdote = {
+        ...anecdote,
+        votes: anecdote.votes + 1,
+      }
+      return state.map((a) => (a.id !== id ? a : updatedAnecdote))
+    },
+  },
+})
+
+export const { createAnecdote, voteForAnecdote } = anecdoteSlice.actions
+export default anecdoteSlice.reducer
+
+// -------- What reducer and action creators looked like before using createSlice() --------
+
+/* const anecdoteReducer = (state = initialState, action) => {
+  switch (action.type) {
+    // 6.4 - Implement the functionality for adding new anecdotes.
+    // You can keep the form uncontrolled like we did earlier.
     case 'ADD_NEW': {
       return [
         ...state,
         { content: action.payload.content, id: getId(), votes: 0 },
       ]
     }
-    /**
-     * 6.3 - Implement the functionality for voting anecdotes.
-     * The number of votes must be saved to a Redux store.
-     */
+    // 6.3 - Implement the functionality for voting anecdotes.
+    // The number of votes must be saved to a Redux store.
     case 'VOTE': {
       const id = action.payload.id
 
@@ -48,13 +88,13 @@ const anecdoteReducer = (state = initialState, action) => {
     default:
       return state
   }
-}
+} */
 
 /**
  * 6.6 - If you haven't done so already, separate the creation of action-objects to
  * action creator-functions and place them in the src/reducers/anecdoteReducer.js file,
  * so do what we have been doing since the chapter action creators.
- */
+ 
 
 export const voteForAnecdote = (id) => {
   return {
@@ -70,4 +110,4 @@ export const createAnecdote = (content) => {
   }
 }
 
-export default anecdoteReducer
+export default anecdoteReducer */

@@ -13,15 +13,13 @@
     "react-redux": "^8.1.2",
     "react-scripts": "^5.0.1",
     "redux": "^4.2.1",
-    "redux-thunk": "^2.4.2",
     "web-vitals": "^3.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "server": "json-server -p3001 --watch db.json"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
@@ -40,9 +38,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "json-server": "^0.17.3",
-    "redux-devtools-extension": "^2.13.9"
   }
 }

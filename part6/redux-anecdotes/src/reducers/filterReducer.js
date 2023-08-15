@@ -1,3 +1,5 @@
+import { createSlice } from '@reduxjs/toolkit'
+
 /**
  * 6.9 - Implement filtering for the anecdotes that are displayed to
  * the user. Store the state of the filter in the redux store. It is
@@ -5,20 +7,21 @@
  * a combined reducer for the store using the combineReducers function.
  */
 
-const filterReducer = (state = '', action) => {
-  switch (action.type) {
-    case 'SET_FILTER':
-      return action.filter
-    default:
-      return state
-  }
-}
+/**
+ * 6.10 - Change the definition of the filter reducer and action creators
+ * to use the Redux Toolkit's createSlice function.
+ */
 
-export const filterChange = (filter) => {
-  return {
-    type: 'SET_FILTER',
-    filter,
-  }
-}
+const filterSlice = createSlice({
+  name: 'filter',
+  initialState: '',
+  reducers: {
+    setFilter(state, action) {
+      const filter = action.payload ?? state
+      return filter
+    },
+  },
+})
 
-export default filterReducer
+export const { setFilter } = filterSlice.actions
+export default filterSlice.reducer
