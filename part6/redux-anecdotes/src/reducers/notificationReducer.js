@@ -1,4 +1,4 @@
-const initialState = { content: '', timeoutId: undefined }
+import { createSlice } from '@reduxjs/toolkit'
 
 /**
  * 6.12 - You will have to make changes to the application's existing reducer.
@@ -16,29 +16,31 @@ const initialState = { content: '', timeoutId: undefined }
  * It's recommended to create separate action creators for setting and removing notifications.
  */
 
-const notificationReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'SET_NOTIFICATION':
+const initialState = { content: '', timeoutId: undefined }
+
+const notificationSlice = createSlice({
+  name: 'notification',
+  initialState: initialState,
+  reducers: {
+    createNotification(state, action) {
       if (state.timeoutId) {
         clearTimeout(state.timeoutId)
       }
       return {
         ...state,
-        content: action.data.content,
-        timeoutId: action.data.timeoutId,
+        content: action.payload.content,
+        timeoutId: action.payload.timeoutId,
       }
-    case 'CLEAR_NOTIFICATION':
+    },
+    clearNotification(state, action) {
       return initialState
-    default:
-      return state
-  }
-}
+    },
+  },
+})
 
-export const clearNotification = () => {
-  return {
-    type: 'CLEAR_NOTIFICATION',
-  }
-}
+export const { clearNotification, createNotification } =
+  notificationSlice.actions
+export default notificationSlice.reducer
 
 export const setNotification = (notification, time = 5) => {
   return async (dispatch) => {
@@ -46,11 +48,8 @@ export const setNotification = (notification, time = 5) => {
       () => dispatch(clearNotification()),
       time * 1000
     )
-    dispatch({
-      type: 'SET_NOTIFICATION',
-      data: { content: notification, timeoutId: timeoutId },
-    })
+    dispatch(
+      createNotification({ content: notification, timeoutId: timeoutId })
+    )
   }
 }
-
-export default notificationReducer
