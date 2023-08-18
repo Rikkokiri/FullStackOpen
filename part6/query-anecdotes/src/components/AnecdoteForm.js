@@ -1,8 +1,13 @@
 import { useMutation, useQueryClient } from 'react-query'
 import { createAnecdote } from '../requests'
+import {
+  showNotification,
+  useNotificationDispatch,
+} from '../NotificationContext'
 
 const AnecdoteForm = () => {
   const queryClient = useQueryClient()
+  const dispatchNotification = useNotificationDispatch()
 
   /**
    * 6.21 - Implement adding new anecdotes to the server using React Query.
@@ -22,6 +27,11 @@ const AnecdoteForm = () => {
     const content = event.target.anecdote.value
     event.target.anecdote.value = ''
     newAnecdoteMutation.mutate({ content: content, votes: 0 })
+    showNotification(
+      dispatchNotification,
+      `You added new anecdote: '${content}'`,
+      10
+    )
   }
 
   return (

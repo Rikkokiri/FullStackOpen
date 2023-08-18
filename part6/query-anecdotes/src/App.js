@@ -2,13 +2,24 @@ import { useQuery, useQueryClient, useMutation } from 'react-query'
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { getAnecdotes, updateAnecdote } from './requests'
+import {
+  useNotificationDispatch,
+  showNotification,
+} from './NotificationContext'
 
 const App = () => {
+  const dispatchNotification = useNotificationDispatch()
+
   const handleVote = (anecdote) => {
     updateAnecdoteMutation.mutate({
       ...anecdote,
       votes: anecdote.votes + 1,
     })
+    showNotification(
+      dispatchNotification,
+      `You voted for: '${anecdote.content}'`,
+      5
+    )
   }
 
   const queryClient = useQueryClient()
@@ -38,7 +49,7 @@ const App = () => {
       <h1>Anecdote app</h1>
 
       <Notification />
-      <AnecdoteForm />
+      <AnecdoteForm showNotification={showNotification} />
 
       <ul className="anecdote-list">
         {anecdotesQuery.data.map((anecdote) => (
