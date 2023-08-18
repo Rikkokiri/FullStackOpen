@@ -35,20 +35,29 @@ const App = () => {
 
   return (
     <div>
-      <h3>Anecdote app</h3>
+      <h1>Anecdote app</h1>
 
       <Notification />
       <AnecdoteForm />
 
-      {anecdotesQuery.data.map((anecdote) => (
-        <div key={anecdote.id}>
-          <div>{anecdote.content}</div>
-          <div>
-            has {anecdote.votes}
-            <button onClick={() => handleVote(anecdote)}>vote</button>
-          </div>
-        </div>
-      ))}
+      <ul className="anecdote-list">
+        {anecdotesQuery.data.map((anecdote) => (
+          <li key={anecdote.id}>
+            <div className="anecdote-content">{anecdote.content}</div>
+            <div>
+              <span className="vote-count">
+                has {anecdote.votes} {anecdote.votes === 1 ? 'vote' : 'votes'}
+              </span>
+              <button
+                onClick={() => handleVote(anecdote)}
+                style={{ marginLeft: 5 }}
+              >
+                Vote
+              </button>
+            </div>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

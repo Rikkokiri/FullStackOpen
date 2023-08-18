@@ -25,13 +25,15 @@ const AnecdoteForm = () => {
   }
 
   return (
-    <div>
-      <h3>create new</h3>
+    <section className="anecdote-form">
+      <h2>Create new</h2>
       <form onSubmit={onCreate}>
-        <input name="anecdote" />
-        <button type="submit">create</button>
+        <div>
+          <input name="anecdote" />
+        </div>
+        <button>Create</button>
       </form>
-    </div>
+    </section>
   )
 }
 
