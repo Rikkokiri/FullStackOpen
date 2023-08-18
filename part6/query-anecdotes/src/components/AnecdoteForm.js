@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from 'react-query'
-import { createAnecdote, getAnecdotes } from '../requests'
+import { createAnecdote } from '../requests'
 
 const AnecdoteForm = () => {
   const queryClient = useQueryClient()
@@ -12,10 +12,8 @@ const AnecdoteForm = () => {
    * You don't have to worry about error handling now.
    */
   const newAnecdoteMutation = useMutation(createAnecdote, {
-    onSucess: (newAnecdote) => {
+    onSuccess: (newAnecdote) => {
       queryClient.invalidateQueries('anecdotes')
-      // const anecdotes = queryClient.getQueryData('anecdotes')
-      // queryClient.setQueryData('anecdotes', anecdotes.concat(newAnecdote))
     },
   })
 
