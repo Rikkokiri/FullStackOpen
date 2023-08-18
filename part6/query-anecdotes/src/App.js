@@ -14,6 +14,11 @@ const App = () => {
     return <div>Loading...</div>
   }
 
+  /**
+   * 6.20 - Implement retrieving anecdotes from the server using React Query.
+   * The application should work in such a way that if there are problems
+   * communicating with the server, only an error page will be displayed:
+   */
   if (anecdotesQuery.isError) {
     return <div>Anecdote service not available due to problems in server</div>
   }
