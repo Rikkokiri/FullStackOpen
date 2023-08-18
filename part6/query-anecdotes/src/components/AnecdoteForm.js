@@ -20,13 +20,31 @@ const AnecdoteForm = () => {
     onSuccess: (newAnecdote) => {
       queryClient.invalidateQueries('anecdotes')
     },
+    onError: (error) => {
+      console.log('error', error)
+      if (error.request.status === 400) {
+        showNotification(
+          dispatchNotification,
+          `Too short anecdote, must have length 5 or more`,
+          10,
+          true
+        )
+      } else {
+        showNotification(
+          dispatchNotification,
+          `Error adding new anecdote: ${error.message}`,
+          10,
+          true
+        )
+      }
+    },
   })
 
-  const onCreate = (event) => {
+  const onCreate = async (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
+    await newAnecdoteMutation.mutateAsync({ content: content, votes: 0 })
     event.target.anecdote.value = ''
-    newAnecdoteMutation.mutate({ content: content, votes: 0 })
     showNotification(
       dispatchNotification,
       `You added new anecdote: '${content}'`,

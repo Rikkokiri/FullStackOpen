@@ -63,6 +63,11 @@ button:hover, button:focus {
     max-width: 750px;
 }
 
+.notification.error {
+    border: 2px solid #B2422E;
+    background-color: #FBDADE;
+}
+
 .anecdote-form {
     margin-top: 3rem;
 }

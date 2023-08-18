@@ -5,7 +5,11 @@ const Notification = () => {
 
   if (!notification.content) return null
 
-  return <div className="notification">{notification.content}</div>
+  return (
+    <div className={`notification ${notification.error ? 'error' : ''}`}>
+      {notification.content}
+    </div>
+  )
 }
 
 export default Notification
