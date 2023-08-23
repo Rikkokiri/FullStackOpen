@@ -1,44 +1,37 @@
-import { useMutation, useQueryClient } from 'react-query'
-import { createAnecdote } from '../requests'
 import {
   showNotification,
   useNotificationDispatch,
 } from '../NotificationContext'
+import { useAnecdoteApiPost } from '../anecdotes'
 
 const AnecdoteForm = () => {
-  const queryClient = useQueryClient()
-  const dispatchNotification = useNotificationDispatch()
+  const onCreateError = (error) => {
+    /**
+     * 6.24 - As stated in exercise 6.21, the server requires that the content
+     * of the anecdote to be added is at least 5 characters long.
+     * Now implement error handling for the insertion. In practice, it is
+     * sufficient to display a notification to the user in case of a failed POST request.
+     * The error condition should be handled in the callback function registered for it.
+     */
+    if (error.request.status === 400) {
+      showNotification(
+        dispatchNotification,
+        `Too short anecdote, must have length 5 or more`,
+        10,
+        true
+      )
+    } else {
+      showNotification(
+        dispatchNotification,
+        `Error adding new anecdote.`,
+        10,
+        true
+      )
+    }
+  }
 
-  /**
-   * 6.21 - Implement adding new anecdotes to the server using React Query.
-   * The application should render a new anecdote by default.
-   * Note that the content of the anecdote must be at least 5 characters
-   * long, otherwise the server will reject the POST request.
-   * You don't have to worry about error handling now.
-   */
-  const newAnecdoteMutation = useMutation(createAnecdote, {
-    onSuccess: (newAnecdote) => {
-      queryClient.invalidateQueries('anecdotes')
-    },
-    onError: (error) => {
-      console.log('error', error)
-      if (error.request.status === 400) {
-        showNotification(
-          dispatchNotification,
-          `Too short anecdote, must have length 5 or more`,
-          10,
-          true
-        )
-      } else {
-        showNotification(
-          dispatchNotification,
-          `Error adding new anecdote: ${error.message}`,
-          10,
-          true
-        )
-      }
-    },
-  })
+  const dispatchNotification = useNotificationDispatch()
+  const newAnecdoteMutation = useAnecdoteApiPost(onCreateError)
 
   const onCreate = async (event) => {
     event.preventDefault()
