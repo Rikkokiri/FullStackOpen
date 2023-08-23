@@ -28,19 +28,20 @@ const initialState = anecdotesAtStart.map(asObject)
 
 const anecdoteSlice = createSlice({
   name: 'anecdotes',
-  initialState: [], // initialState,
+  initialState: [],
   reducers: {
     /**
      * 6.4 - Implement the functionality for adding new anecdotes.
      * You can keep the form uncontrolled like we did earlier.
      */
     createAnecdote(state, action) {
-      const content = action.payload
+      /* const content = action.payload
       state.push({
         content,
         votes: 0,
         id: getId(),
-      })
+      }) */
+      state.push(action.payload)
     },
     /**
      * 6.3 - Implement the functionality for voting anecdotes.
