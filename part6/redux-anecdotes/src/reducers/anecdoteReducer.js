@@ -28,7 +28,7 @@ const initialState = anecdotesAtStart.map(asObject)
 
 const anecdoteSlice = createSlice({
   name: 'anecdotes',
-  initialState: initialState,
+  initialState: [], // initialState,
   reducers: {
     /**
      * 6.4 - Implement the functionality for adding new anecdotes.
@@ -55,6 +55,9 @@ const anecdoteSlice = createSlice({
       }
       return state.map((a) => (a.id !== id ? a : updatedAnecdote))
     },
+    setAnecdotes(state, action) {
+      return action.payload
+    },
   },
 })
 
@@ -78,7 +81,8 @@ export const selectFilteredSortedAnecdotes = createSelector(
   }
 )
 
-export const { createAnecdote, voteForAnecdote } = anecdoteSlice.actions
+export const { createAnecdote, voteForAnecdote, setAnecdotes } =
+  anecdoteSlice.actions
 export default anecdoteSlice.reducer
 
 // -------- What reducer and action creators looked like before using createSlice() --------
