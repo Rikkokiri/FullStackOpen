@@ -49,14 +49,10 @@ const anecdoteSlice = createSlice({
      * 6.3 - Implement the functionality for voting anecdotes.
      * The number of votes must be saved to a Redux store.
      */
-    voteForAnecdote(state, action) {
-      const id = action.payload
-      const anecdote = state.find((a) => a.id === id)
-      const updatedAnecdote = {
-        ...anecdote,
-        votes: anecdote.votes + 1,
-      }
-      return state.map((a) => (a.id !== id ? a : updatedAnecdote))
+    updateAnecdote(state, action) {
+      const anecdote = action.payload
+      const id = anecdote.id
+      return state.map((a) => (a.id !== id ? a : anecdote))
     },
     setAnecdotes(state, action) {
       return action.payload
@@ -84,7 +80,7 @@ export const selectFilteredSortedAnecdotes = createSelector(
   }
 )
 
-export const { addAnecdote, voteForAnecdote, setAnecdotes } =
+export const { addAnecdote, updateAnecdote, setAnecdotes } =
   anecdoteSlice.actions
 export default anecdoteSlice.reducer
 
@@ -105,9 +101,35 @@ export const initializeAnecdotes = () => {
  */
 export const createAnecdote = (content) => {
   return async (dispatch) => {
-    const newAnecdote = await anecdoteService.createNew(content)
-    dispatch(setNotification(`You added new anecdote: '${content}'`, 10))
-    dispatch(addAnecdote(newAnecdote))
+    try {
+      const newAnecdote = await anecdoteService.createNew(content)
+      dispatch(setNotification(`You added new anecdote: '${content}'`, 10))
+      dispatch(addAnecdote(newAnecdote))
+    } catch (err) {
+      dispatch(
+        setNotification(
+          `Adding an anecdote failed due to server error`,
+          10,
+          true
+        )
+      )
+    }
+  }
+}
+
+/**
+ * 6.18 - Voting does not yet save changes to the backend.
+ * Fix the situation with the help of the Redux Thunk library.
+ */
+export const voteForAnecdote = (id) => {
+  return async (dispatch) => {
+    try {
+      const anecdote = await anecdoteService.addVote(id)
+      dispatch(updateAnecdote(anecdote))
+      dispatch(setNotification(`You voted for: '${anecdote.content}'`, 10))
+    } catch (err) {
+      dispatch(setNotification(`Voting failed due to server error`, 10, true))
+    }
   }
 }
 

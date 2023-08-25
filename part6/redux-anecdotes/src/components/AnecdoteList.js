@@ -4,7 +4,6 @@ import {
   voteForAnecdote,
   selectFilteredSortedAnecdotes,
 } from '../reducers/anecdoteReducer'
-import { setNotification } from '../reducers/notificationReducer'
 
 /**
  * 6.8 - Separate the rendering of the anecdote list into a component
@@ -17,8 +16,6 @@ const AnecdoteList = () => {
   const dispatch = useDispatch()
   const vote = (id) => {
     dispatch(voteForAnecdote(id))
-    const anecdote = anecdotes.find((a) => a.id === id)
-    dispatch(setNotification(`You voted for: '${anecdote.content}'`, 5))
   }
 
   return (

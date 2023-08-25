@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { createAnecdote } from '../reducers/anecdoteReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 /**
  * 6.7 - Separate the creation of new anecdotes into a component called AnecdoteForm.
@@ -15,6 +16,12 @@ const AnecdoteForm = () => {
   const addAnecdote = async (event) => {
     event.preventDefault()
     const content = event.target.anecdote.value
+
+    if (content === '') {
+      dispatch(setNotification(`You didn't enter anything`, 5, true))
+      return
+    }
+
     event.target.anecdote.value = ''
     dispatch(createAnecdote(content))
   }
