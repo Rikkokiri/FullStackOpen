@@ -1,5 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit'
-import anecdoteService from '../services/anecdotes'
+import * as anecdoteService from '../services/anecdotes'
 import { setNotification } from './notificationReducer'
 
 const anecdotesAtStart = [
@@ -21,6 +21,7 @@ const asObject = (anecdote) => {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 const initialState = anecdotesAtStart.map(asObject)
 
 /**

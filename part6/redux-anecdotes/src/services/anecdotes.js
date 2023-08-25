@@ -20,4 +20,4 @@ const addVote = async (id) => {
   return response.data
 }
 
-export default { addVote, createNew, getAll }
+export { addVote, createNew, getAll }
