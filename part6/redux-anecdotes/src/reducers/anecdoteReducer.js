@@ -1,5 +1,6 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit'
 import anecdoteService from '../services/anecdotes'
+import { setNotification } from './notificationReducer'
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -35,7 +36,7 @@ const anecdoteSlice = createSlice({
      * 6.4 - Implement the functionality for adding new anecdotes.
      * You can keep the form uncontrolled like we did earlier.
      */
-    createAnecdote(state, action) {
+    addAnecdote(state, action) {
       /* const content = action.payload
       state.push({
         content,
@@ -83,7 +84,7 @@ export const selectFilteredSortedAnecdotes = createSelector(
   }
 )
 
-export const { createAnecdote, voteForAnecdote, setAnecdotes } =
+export const { addAnecdote, voteForAnecdote, setAnecdotes } =
   anecdoteSlice.actions
 export default anecdoteSlice.reducer
 
@@ -95,6 +96,18 @@ export const initializeAnecdotes = () => {
   return async (dispatch) => {
     const anecdotes = await anecdoteService.getAll()
     dispatch(setAnecdotes(anecdotes))
+  }
+}
+
+/**
+ * 6.17 - Also modify the creation of a new anecdote to happen using
+ * asynchronous action creators, made possible by the Redux Thunk library.
+ */
+export const createAnecdote = (content) => {
+  return async (dispatch) => {
+    const newAnecdote = await anecdoteService.createNew(content)
+    dispatch(setNotification(`You added new anecdote: '${content}'`, 10))
+    dispatch(addAnecdote(newAnecdote))
   }
 }
 
