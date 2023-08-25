@@ -1,4 +1,5 @@
 import { createSlice, createSelector } from '@reduxjs/toolkit'
+import anecdoteService from '../services/anecdotes'
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -85,6 +86,17 @@ export const selectFilteredSortedAnecdotes = createSelector(
 export const { createAnecdote, voteForAnecdote, setAnecdotes } =
   anecdoteSlice.actions
 export default anecdoteSlice.reducer
+
+/**
+ * 6.16 - Modify the initialization of the Redux store to happen using asynchronous
+ * action creators, which are made possible by the Redux Thunk library.
+ */
+export const initializeAnecdotes = () => {
+  return async (dispatch) => {
+    const anecdotes = await anecdoteService.getAll()
+    dispatch(setAnecdotes(anecdotes))
+  }
+}
 
 // -------- What reducer and action creators looked like before using createSlice() --------
 
