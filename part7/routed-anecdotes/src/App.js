@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Route, Routes, useMatch } from 'react-router-dom';
-import AboutPage from './components/AboutPage';
-import AnecdoteList from './components/AnecdoteList';
-import AnecdotePage from './components/AnecdotePage';
-import Footer from './components/Footer';
-import Menu from './components/Menu';
-import NewAnecdoteForm from './components/NewAnecdoteForm';
-import './index.css';
+import React, { useState } from 'react'
+import { Route, Routes, useMatch } from 'react-router-dom'
+import AboutPage from './components/AboutPage'
+import AnecdoteList from './components/AnecdoteList'
+import AnecdotePage from './components/AnecdotePage'
+import Footer from './components/Footer'
+import Menu from './components/Menu'
+import NewAnecdoteForm from './components/NewAnecdoteForm'
+import './index.css'
 
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
@@ -24,35 +24,43 @@ const App = () => {
       votes: 0,
       id: '2',
     },
-  ]);
+  ])
 
-  const [notification, setNotification] = useState('');
+  const [notification, setNotification] = useState('')
 
   const addNew = (anecdote) => {
-    anecdote.id = (Math.random() * 10000).toFixed(0);
-    setAnecdotes(anecdotes.concat(anecdote));
-    setNotification(`A new anecdote "${anecdote.content}" created!`);
-    setTimeout(() => setNotification(''), 10000);
-  };
+    anecdote.id = (Math.random() * 10000).toFixed(0)
+    setAnecdotes(anecdotes.concat(anecdote))
+    setNotification(`A new anecdote "${anecdote.content}" created!`)
+    setTimeout(() => setNotification(''), 5000)
+  }
 
-  const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
+  const anecdoteById = (id) => anecdotes.find((a) => a.id === id)
 
   const vote = (id) => {
-    const anecdote = anecdoteById(id);
+    const anecdote = anecdoteById(id)
 
     const voted = {
       ...anecdote,
       votes: anecdote.votes + 1,
-    };
+    }
 
-    setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)));
-  };
+    setAnecdotes(anecdotes.map((a) => (a.id === id ? voted : a)))
+  }
 
-  const match = useMatch('/anecdotes/:id');
+  const match = useMatch('/anecdotes/:id')
   const anecdote = match
     ? anecdotes.find((a) => a.id === match.params.id)
-    : null;
+    : null
 
+  /**
+   * 7.1 - Add React Router to the application so that by clicking
+   * links in the Menu component the view can be changed.
+   *
+   * - At the root of the application, meaning the path /, show the list of anecdotes.
+   * - The Footer component should always be visible at the bottom.
+   * - The creation of a new anecdote should happen e.g. in the path create.
+   */
   return (
     <div>
       <h1>Software anecdotes</h1>
@@ -69,7 +77,7 @@ const App = () => {
       </Routes>
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

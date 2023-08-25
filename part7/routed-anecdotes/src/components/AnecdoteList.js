@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
@@ -11,6 +11,6 @@ const AnecdoteList = ({ anecdotes }) => (
       ))}
     </ul>
   </div>
-);
+)
 
-export default AnecdoteList;
+export default AnecdoteList

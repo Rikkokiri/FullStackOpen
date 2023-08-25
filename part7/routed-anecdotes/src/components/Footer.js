@@ -1,12 +1,15 @@
-const Footer = () => (
-  <div>
-    Anecdote app for <a href="https://fullstackopen.com/">Full Stack Open</a>.
-    See{' '}
-    <a href="https://github.com/fullstack-hy/routed-anecdotes/blob/master/src/App.js">
-      https://github.com/fullstack-hy2019/routed-anecdotes/blob/master/src/App.js
-    </a>{' '}
-    for the source code.
-  </div>
-);
+const Footer = () => {
+  return (
+    <div>
+      Anecdote app for <a href="https://fullstackopen.com/">Full Stack Open</a>.
+      <br />
+      See{' '}
+      <a href="https://github.com/Rikkokiri/FullStackOpen/tree/master/part7/routed-anecdotes">
+        https://github.com/Rikkokiri/FullStackOpen/tree/master/part7/routed-anecdotes
+      </a>{' '}
+      for the source code.
+    </div>
+  )
+}
 
-export default Footer;
+export default Footer

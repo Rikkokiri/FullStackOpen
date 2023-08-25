@@ -1,9 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 
 const Menu = () => {
   const padding = {
     paddingRight: 15,
-  };
+  }
+
   return (
     <div>
       <Link to="/" style={padding}>
@@ -16,7 +17,7 @@ const Menu = () => {
         About
       </Link>
     </div>
-  );
-};
+  )
+}
 
-export default Menu;
+export default Menu

@@ -18,6 +18,6 @@ const AboutPage = () => (
       find the best and add more.
     </p>
   </div>
-);
+)
 
-export default AboutPage;
+export default AboutPage
