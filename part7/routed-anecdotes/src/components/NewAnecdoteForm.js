@@ -1,11 +1,11 @@
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useField } from '../hooks';
 
 const NewAnecdoteForm = (props) => {
   const [content, resetContent] = useField('text');
   const [author, resetAuthor] = useField('text');
   const [info, resetInfo] = useField('text');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -15,7 +15,7 @@ const NewAnecdoteForm = (props) => {
       info: info.value,
       votes: 0,
     });
-    history.push('/');
+    navigate('/');
   };
 
   const handleReset = (e) => {
