@@ -16,7 +16,7 @@ import { createSlice } from '@reduxjs/toolkit'
  * It's recommended to create separate action creators for setting and removing notifications.
  */
 
-const initialState = { content: '', timeoutId: undefined }
+const initialState = { content: '', timeoutId: undefined, error: false }
 
 const notificationSlice = createSlice({
   name: 'notification',
@@ -30,6 +30,7 @@ const notificationSlice = createSlice({
         ...state,
         content: action.payload.content,
         timeoutId: action.payload.timeoutId,
+        error: action.payload.error,
       }
     },
     clearNotification(state, action) {
@@ -42,14 +43,27 @@ export const { clearNotification, createNotification } =
   notificationSlice.actions
 export default notificationSlice.reducer
 
-export const setNotification = (notification, time = 5) => {
+/**
+ * 6.19 - The creation of notifications is still a bit tedious since
+ * one has to do two actions and use the setTimeout function.
+ * Make an action creator, which enables one to provide the notification as follows:
+ *    dispatch(setNotification(`you voted '${anecdote.content}'`, 10))
+ *
+ * The first parameter is the text to be rendered and the second parameter is
+ * the time to display the notification given in seconds.
+ */
+export const setNotification = (notification, time = 5, error = false) => {
   return async (dispatch) => {
     const timeoutId = setTimeout(
       () => dispatch(clearNotification()),
       time * 1000
     )
     dispatch(
-      createNotification({ content: notification, timeoutId: timeoutId })
+      createNotification({
+        content: notification,
+        timeoutId: timeoutId,
+        error: error,
+      })
     )
   }
 }
