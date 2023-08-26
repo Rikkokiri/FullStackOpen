@@ -11,6 +11,10 @@ import { useField } from '../hooks'
  * the next five seconds.
  */
 const NewAnecdoteForm = (props) => {
+  /**
+   * 7.4 - Simplify the anecdote creation form of your application with
+   * the useField custom hook we defined earlier.
+   */
   const [content, resetContent] = useField('text')
   const [author, resetAuthor] = useField('text')
   const [info, resetInfo] = useField('text')
@@ -27,6 +31,11 @@ const NewAnecdoteForm = (props) => {
     navigate('/')
   }
 
+  /**
+   * 7.5 - Add a button to the form that you can use to clear all the input fields.
+   * Expand the functionality of the useField hook so that it offers
+   * a new reset operation for clearing the field.
+   */
   const handleReset = (e) => {
     e.preventDefault()
     resetAuthor()
