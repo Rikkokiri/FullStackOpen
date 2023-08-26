@@ -1,58 +1,34 @@
-import React, { useState, useEffect } from 'react'
-import axios from 'axios'
-
-const useField = (type) => {
-  const [value, setValue] = useState('')
-
-  const onChange = (event) => {
-    setValue(event.target.value)
-  }
-
-  return {
-    type,
-    value,
-    onChange,
-  }
-}
-
-const useResource = (baseUrl) => {
-  const [resources, setResources] = useState([])
-
-  useEffect(() => {
-    axios.get(baseUrl).then((response) => {
-      setResources(response.data)
-    })
-  }, [baseUrl])
-
-  const create = (resource) => {
-    axios.post(baseUrl, resource).then((response) => {
-      setResources(resources.concat(response.data))
-    })
-  }
-
-  const service = {
-    create,
-  }
-
-  return [resources, service]
-}
+import { useField, useResource } from './hooks'
 
 const App = () => {
-  const content = useField('text')
-  const name = useField('text')
-  const number = useField('text')
+  const [content, resetContent] = useField('text')
+  const [name, resetName] = useField('text')
+  const [number, resetNumber] = useField('text')
 
   const [notes, noteService] = useResource('http://localhost:3005/notes')
   const [persons, personService] = useResource('http://localhost:3005/persons')
 
-  const handleNoteSubmit = (event) => {
+  const handleNoteSubmit = async (event) => {
     event.preventDefault()
-    noteService.create({ content: content.value })
+    try {
+      await noteService.create({ content: content.value })
+      resetContent()
+    } catch (err) {
+      console.log('Error submitting note: ', err)
+      alert('Error submitting note')
+    }
   }
 
-  const handlePersonSubmit = (event) => {
+  const handlePersonSubmit = async (event) => {
     event.preventDefault()
-    personService.create({ name: name.value, number: number.value })
+    try {
+      await personService.create({ name: name.value, number: number.value })
+      resetName()
+      resetNumber()
+    } catch (err) {
+      console.log('Error submitting new contact: ', err)
+      alert('Error submitting new contact')
+    }
   }
 
   return (
@@ -62,9 +38,11 @@ const App = () => {
         <input {...content} />
         <button>create</button>
       </form>
-      {notes.map((n) => (
-        <p key={n.id}>{n.content}</p>
-      ))}
+      {notes === undefined ? (
+        <p>Error fetching notes</p>
+      ) : (
+        notes.map((n) => <p key={n.id}>{n.content}</p>)
+      )}
 
       <h2>persons</h2>
       <form onSubmit={handlePersonSubmit}>
@@ -72,11 +50,15 @@ const App = () => {
         number <input {...number} />
         <button>create</button>
       </form>
-      {persons.map((n) => (
-        <p key={n.id}>
-          {n.name} {n.number}
-        </p>
-      ))}
+      {persons === undefined ? (
+        <p>Error fetching contacts</p>
+      ) : (
+        persons.map((n) => (
+          <p key={n.id}>
+            {n.name} {n.number}
+          </p>
+        ))
+      )}
     </div>
   )
 }
