@@ -21,13 +21,18 @@ const useCountry = (name) => {
   useEffect(() => {
     if (name) {
       axios
-        .get(`https://restcountries.com/v2/name/${name}?fullText=true`)
+        .get(`https://studies.cs.helsinki.fi/restcountries/api/name/${name}`)
         .then((response) => {
+          console.log('Response: ', response.data)
           if (response.data.status === 404) {
             setCountry({ found: false })
           } else {
-            setCountry({ found: true, data: response.data[0] })
+            setCountry({ found: true, data: response.data })
           }
+        })
+        .catch((err) => {
+          console.log('Error occurred: ', err)
+          setCountry({ found: false })
         })
     }
   }, [name])
@@ -46,13 +51,13 @@ const Country = ({ country }) => {
 
   return (
     <div>
-      <h3>{country.data.name} </h3>
-      <div>capital {country.data.capital} </div>
-      <div>population {country.data.population}</div>
+      <h3>{country.data.name.common} </h3>
+      <div>Capital: {country.data.capital.join(', ')} </div>
+      <div>Population: {country.data.population}</div>
       <img
-        src={country.data.flag}
+        src={country.data.flags.png}
         height="100"
-        alt={`flag of ${country.data.name}`}
+        alt={country.data.flags.alt || `flag of ${country.data.name}`}
       />
     </div>
   )
