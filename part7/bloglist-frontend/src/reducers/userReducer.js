@@ -20,6 +20,12 @@ export const selectSortedUsers = createSelector(selectUsers, (users) => {
   return [...users].sort((a, b) => a.name.localeCompare(b.name))
 })
 
+export const selectUserById = (id) => {
+  return createSelector(selectUsers, (users) => {
+    return users.find((u) => u.id === id)
+  })
+}
+
 export const initializeUsers = () => {
   return async (dispatch) => {
     const users = await userService.getAll()

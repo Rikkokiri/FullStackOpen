@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import * as loginService from '../services/login'
 import * as blogService from '../services/blogs'
-import * as userService from '../services/users'
 
 /**
  * 7.13 Redux - Store the information about the signed-in user in the Redux store.
@@ -14,7 +13,6 @@ const loadUserFromLocalStorage = () => {
   if (userJSON) {
     const parsedUser = JSON.parse(userJSON)
     blogService.setToken(parsedUser.token)
-    userService.setToken(parsedUser.token)
     return parsedUser
   } else {
     return null
