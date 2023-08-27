@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
 import { useParams } from 'react-router-dom'
+import CommentForm from './CommentForm'
 
 /**
  * 7.16 - Implement a separate view for blog posts.
@@ -54,6 +55,18 @@ const Blog = () => {
           <button onClick={() => removeBlog(blog)}>Remove</button>
         )}
       </div>
+      <br />
+      <h3>Comments</h3>
+      <CommentForm blogId={blog.id} />
+      {blog.comments.length ? (
+        <ul>
+          {blog.comments.map((comment) => (
+            <li key={comment.id}>{comment.content}</li>
+          ))}
+        </ul>
+      ) : (
+        <div>No comments yet</div>
+      )}
     </div>
   )
 }

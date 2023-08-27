@@ -12,6 +12,16 @@ const getAll = async () => {
   return response.data
 }
 
+const getAllComplete = async () => {
+  const response = await axios.get(`${baseUrl}/allDetails`)
+  return response.data
+}
+
+const getOne = async (id) => {
+  const response = await axios.get(`${baseUrl}/${id}`)
+  return response.data
+}
+
 const create = async (newObject) => {
   const config = { headers: { Authorization: userToken } }
   const response = await axios.post(baseUrl, newObject, config)
@@ -29,4 +39,23 @@ const remove = async (id) => {
   return response.data
 }
 
-export { create, getAll, remove, update, setToken }
+const addComment = async (id, comment) => {
+  const config = { headers: { Authorization: userToken } }
+  const response = await axios.post(
+    `${baseUrl}/${id}/comments`,
+    comment,
+    config
+  )
+  return response.data
+}
+
+export {
+  addComment,
+  create,
+  getAll,
+  getAllComplete,
+  getOne,
+  remove,
+  setToken,
+  update,
+}

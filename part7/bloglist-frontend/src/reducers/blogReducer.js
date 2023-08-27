@@ -43,7 +43,7 @@ export default blogSlice.reducer
 
 export const initializeBlogs = () => {
   return async (dispatch) => {
-    const blogs = await blogService.getAll()
+    const blogs = await blogService.getAllComplete()
     dispatch(setBlogs(blogs))
   }
 }
@@ -70,5 +70,16 @@ export const deleteBlog = (id) => {
   return async (dispatch) => {
     await blogService.remove(id)
     dispatch(removeBlog(id))
+  }
+}
+
+export const createComment = (blogId, comment) => {
+  return async (dispatch) => {
+    const newComment = await blogService.addComment(blogId, {
+      content: comment,
+    })
+    console.log('New comment: ', newComment)
+    const updatedBlog = await blogService.getOne(blogId)
+    dispatch(updateBlog(updatedBlog))
   }
 }
