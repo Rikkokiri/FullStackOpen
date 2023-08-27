@@ -13,7 +13,7 @@ describe('<BlogForm />', () => {
   test('event handler is called on form submit', async () => {
     const mockCreateBlog = jest.fn()
 
-    render(<BlogForm createBlog={mockCreateBlog} />)
+    render(<BlogForm createNewBlog={mockCreateBlog} />)
 
     const titleInput = screen.getByLabelText('Title')
     const authorInput = screen.getByLabelText('Author')
