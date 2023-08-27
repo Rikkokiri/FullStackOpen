@@ -35,6 +35,7 @@ describe('<Blog />', () => {
       />
     )
 
+  // TODO: Fix test - details are not hidden anymore
   test('renders only basic details (title and author) by default', () => {
     setupBlog()
     const title = screen.getByText(blog.title, { exact: false })

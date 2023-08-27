@@ -10,6 +10,7 @@ import Notification from './components/Notification'
 import UsersList from './components/UsersList'
 import UserPage from './components/UserPage'
 import Blog from './components/Blog'
+import Nav from './components/Nav'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -38,9 +39,20 @@ const App = () => {
     <div>
       <h2>Blogs</h2>
       <Notification />
-      <div>
-        <span>{user.name ? user.name : user.username} logged in </span>
-        <button onClick={handleLogout}>Log out</button>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          backgroundColor: 'lightblue',
+          alignItems: 'center',
+          padding: '0.5rem',
+        }}
+      >
+        <Nav />
+        <div>
+          <span>{user.name ? user.name : user.username} logged in </span>
+          <button onClick={handleLogout}>Log out</button>
+        </div>
       </div>
       <Routes>
         <Route path="/" element={<HomePage />} />
