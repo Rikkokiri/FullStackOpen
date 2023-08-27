@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 /**
- * 7.10 - Refactor the application to use Redux to manage the notification data.
+ * 7.10 Redux - Refactor the application to use Redux to manage the notification data.
  */
 
 const initialState = { message: '', error: false, timeoutId: undefined }
