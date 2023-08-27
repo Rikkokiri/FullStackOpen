@@ -1,8 +1,15 @@
+import { createSlice } from '@reduxjs/toolkit'
 import * as loginService from '../services/login'
 import * as blogService from '../services/blogs'
 
+/**
+ * 7.13 Redux - Store the information about the signed-in user in the Redux store.
+ */
+
+const LOCAL_STORAGE_USER = 'bloglistUser'
+
 const loadUserFromLocalStorage = () => {
-  const userJSON = window.localStorage.getItem('bloglistUser')
+  const userJSON = window.localStorage.getItem(LOCAL_STORAGE_USER)
   if (userJSON) {
     const parsedUser = JSON.parse(userJSON)
     blogService.setToken(parsedUser.token)
@@ -12,40 +19,29 @@ const loadUserFromLocalStorage = () => {
   }
 }
 
-const initialState = { currentUser: loadUserFromLocalStorage() }
-
-const userReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'LOGIN': {
-      console.log('LOGIN action data', action.data)
-      const user = action.data
+const userSlice = createSlice({
+  name: 'user',
+  initialState: { currentUser: loadUserFromLocalStorage() },
+  reducers: {
+    setUserLoggedIn(state, action) {
+      const user = action.payload
       blogService.setToken(user.token)
-      window.localStorage.setItem('bloglistUser', JSON.stringify(user))
+      window.localStorage.setItem(LOCAL_STORAGE_USER, JSON.stringify(user))
       return { ...state, currentUser: user }
-    }
-    case 'LOGOUT': {
-      window.localStorage.removeItem('bloglistUser')
+    },
+    logout(state, _action) {
+      window.localStorage.removeItem(LOCAL_STORAGE_USER)
       return { ...state, currentUser: null }
-    }
-    default:
-      return state
-  }
-}
+    },
+  },
+})
+
+export const { setUserLoggedIn, logout } = userSlice.actions
+export default userSlice.reducer
 
 export const login = (username, password) => {
   return async (dispatch) => {
     const user = await loginService.login({ username, password })
-    dispatch({
-      type: 'LOGIN',
-      data: user,
-    })
+    dispatch(setUserLoggedIn(user))
   }
 }
-
-export const logout = () => {
-  return {
-    type: 'LOGOUT',
-  }
-}
-
-export default userReducer
