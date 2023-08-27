@@ -69,7 +69,6 @@ li button {
 .blog-details {
   margin: 0.3rem 0;
   padding: 0.5rem;
-  border: 1px solid grey;
 }
 
 .blog-details button {
@@ -77,8 +76,10 @@ li button {
   margin: 0.1rem 0.2rem;
 }
 
-.blog-summaryrow {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.blog-details h2 {
+  margin-bottom: 0.25rem;
+}
+
+.blog-details h3 {
+  margin-top: 0;
 }

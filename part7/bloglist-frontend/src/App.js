@@ -9,6 +9,7 @@ import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import UsersList from './components/UsersList'
 import UserPage from './components/UserPage'
+import Blog from './components/Blog'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -43,8 +44,10 @@ const App = () => {
       </div>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/blogs" element={<HomePage />} />
         <Route path="/users" element={<UsersList />} />
         <Route path="/users/:userId" element={<UserPage />} />
+        <Route path="/blogs/:blogId" element={<Blog />} />
         <Route path="*" element={<div>Page not found</div>} />
       </Routes>
     </div>

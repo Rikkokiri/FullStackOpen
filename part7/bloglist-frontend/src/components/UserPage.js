@@ -2,6 +2,13 @@ import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectUserById } from '../reducers/userReducer'
 
+/**
+ *
+ * 7.15 - Implement a view for individual users that displays
+ * all of the blog posts added by that user.
+ * You can access the view by clicking the name of the user
+ * in the view that lists all users.
+ */
 const UserPage = () => {
   const { userId } = useParams()
   const user = useSelector(selectUserById(userId))

@@ -1,15 +1,10 @@
 import React, { useRef } from 'react'
-import Blog from './Blog'
 import BlogForm from './BlogForm'
 import Togglable from './Togglable'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  createBlog,
-  deleteBlog,
-  likeBlog,
-  selectSortedBlogs,
-} from '../reducers/blogReducer'
+import { createBlog, selectSortedBlogs } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Link } from 'react-router-dom'
 
 const HomePage = () => {
   const blogFormRef = useRef()
@@ -32,30 +27,19 @@ const HomePage = () => {
     }
   }
 
-  const handleLike = async (blog) => {
-    dispatch(likeBlog(blog))
-  }
-
-  const removeBlog = async (blog) => {
-    if (window.confirm(`Remove "${blog.title}" by ${blog.author}?`)) {
-      dispatch(deleteBlog(blog.id))
-    }
-  }
-
   return (
     <div>
       <Togglable showLabel={'New blog'} hideLabel={'Cancel'} ref={blogFormRef}>
         <BlogForm createNewBlog={createNewBlog} />
       </Togglable>
       <br />
-      {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleLike={handleLike}
-          removeBlog={removeBlog}
-        />
-      ))}
+      <ul>
+        {blogs.map((blog) => (
+          <li key={blog.id}>
+            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }
