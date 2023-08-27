@@ -7,17 +7,16 @@ import Togglable from './components/Togglable'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   initializeBlogs,
-  addBlog,
+  createBlog,
   deleteBlog,
   likeBlog,
+  selectSortedBlogs,
 } from './reducers/blogReducer'
-import { login, logout } from './reducers/userReducer'
+import { logout } from './reducers/userReducer'
 import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
-  const blogs = useSelector(({ blogs }) => {
-    return blogs.sort((a, b) => b.likes - a.likes)
-  })
+  const blogs = useSelector((state) => selectSortedBlogs(state))
   const user = useSelector((state) => state.users.currentUser)
   const blogFormRef = useRef()
   const dispatch = useDispatch()
@@ -26,22 +25,13 @@ const App = () => {
     dispatch(initializeBlogs())
   }, [dispatch])
 
-  const handleLogin = async (username, password) => {
-    try {
-      dispatch(login(username, password))
-    } catch (error) {
-      dispatch(setNotification(error.response.data.error, true))
-      throw error
-    }
-  }
-
   const handleLogout = () => {
     dispatch(logout())
   }
 
-  const createBlog = async (blogObject) => {
+  const createNewBlog = async (blogObject) => {
     try {
-      dispatch(addBlog(blogObject))
+      dispatch(createBlog(blogObject))
       blogFormRef.current.toggleVisibility()
       dispatch(
         setNotification(
@@ -70,7 +60,7 @@ const App = () => {
       <div>
         <h1>Log in to the application</h1>
         <Notification />
-        <LoginForm handleLogin={handleLogin} />
+        <LoginForm />
       </div>
     )
   }
@@ -84,7 +74,7 @@ const App = () => {
         <button onClick={handleLogout}>Log out</button>
       </div>
       <Togglable showLabel={'New blog'} hideLabel={'Cancel'} ref={blogFormRef}>
-        <BlogForm createBlog={createBlog} />
+        <BlogForm createNewBlog={createNewBlog} />
       </Togglable>
       <br />
       {blogs.map((blog) => (
