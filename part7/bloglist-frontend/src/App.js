@@ -1,58 +1,25 @@
-import React, { useEffect, useRef } from 'react'
-import Blog from './components/Blog'
-import LoginForm from './components/LoginForm'
-import BlogForm from './components/BlogForm'
-import Notification from './components/Notification'
-import Togglable from './components/Togglable'
+import React, { useEffect } from 'react'
+import { Route, Routes } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  initializeBlogs,
-  createBlog,
-  deleteBlog,
-  likeBlog,
-  selectSortedBlogs,
-} from './reducers/blogReducer'
-import { logout } from './reducers/userReducer'
-import { setNotification } from './reducers/notificationReducer'
+import { initializeBlogs } from './reducers/blogReducer'
+import { initializeUsers } from './reducers/userReducer'
+import { logout } from './reducers/loginReducer'
+import HomePage from './components/HomePage'
+import LoginForm from './components/LoginForm'
+import Notification from './components/Notification'
+import UsersList from './components/UsersList'
 
 const App = () => {
-  const blogs = useSelector((state) => selectSortedBlogs(state))
-  const user = useSelector((state) => state.users.currentUser)
-  const blogFormRef = useRef()
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.login.currentUser)
 
   useEffect(() => {
     dispatch(initializeBlogs())
+    dispatch(initializeUsers())
   }, [dispatch])
 
   const handleLogout = () => {
     dispatch(logout())
-  }
-
-  const createNewBlog = async (blogObject) => {
-    try {
-      dispatch(createBlog(blogObject))
-      blogFormRef.current.toggleVisibility()
-      dispatch(
-        setNotification(
-          `A new blog "${blogObject.title}" by ${blogObject.author} added`
-        )
-      )
-    } catch (error) {
-      console.log('Error creating a blog', error)
-      dispatch(setNotification(error.response.data.error, true, 5000))
-      throw error // Throw error so blog form knowns error happened and does not reset fields
-    }
-  }
-
-  const handleLike = async (blog) => {
-    dispatch(likeBlog(blog))
-  }
-
-  const removeBlog = async (blog) => {
-    if (window.confirm(`Remove "${blog.title}" by ${blog.author}?`)) {
-      dispatch(deleteBlog(blog.id))
-    }
   }
 
   if (!user) {
@@ -73,19 +40,10 @@ const App = () => {
         <span>{user.name ? user.name : user.username} logged in </span>
         <button onClick={handleLogout}>Log out</button>
       </div>
-      <Togglable showLabel={'New blog'} hideLabel={'Cancel'} ref={blogFormRef}>
-        <BlogForm createNewBlog={createNewBlog} />
-      </Togglable>
-      <br />
-      {blogs.map((blog) => (
-        <Blog
-          key={blog.id}
-          blog={blog}
-          handleLike={handleLike}
-          removeBlog={removeBlog}
-          user={user}
-        />
-      ))}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/users" element={<UsersList />} />
+      </Routes>
     </div>
   )
 }

@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 
-const Blog = ({ blog, handleLike, removeBlog, user }) => {
+const Blog = ({ blog, handleLike, removeBlog }) => {
   const [showDetails, setShowDetails] = useState(false)
+  const user = useSelector((state) => state.login.currentUser)
   const allowDelete = blog.user.username === user.username
 
   const toggleDetails = () => {
@@ -39,6 +41,7 @@ const Blog = ({ blog, handleLike, removeBlog, user }) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   handleLike: PropTypes.func.isRequired,
+  removeBlog: PropTypes.func.isRequired,
 }
 
 export default Blog
