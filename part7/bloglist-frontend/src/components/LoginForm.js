@@ -1,18 +1,22 @@
 import { useState } from 'react'
 import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { setNotification } from '../reducers/notificationReducer'
+import { login, logout } from '../reducers/userReducer'
 
 const LoginForm = ({ handleLogin }) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     try {
-      await handleLogin(username, password)
+      await dispatch(login(username, password))
       setUsername('')
       setPassword('')
     } catch (error) {
-      console.log(error)
+      dispatch(setNotification(error.response.data.error, true))
     }
   }
 

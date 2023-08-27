@@ -12,6 +12,7 @@ import {
   likeBlog,
 } from './reducers/blogReducer'
 import { login, logout } from './reducers/userReducer'
+import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
   const blogs = useSelector(({ blogs }) => {
@@ -29,7 +30,7 @@ const App = () => {
     try {
       dispatch(login(username, password))
     } catch (error) {
-      showNotification(error.response.data.error, true)
+      dispatch(setNotification(error.response.data.error, true))
       throw error
     }
   }
@@ -38,29 +39,18 @@ const App = () => {
     dispatch(logout())
   }
 
-  // TODO: move implementation details to redux
-  const showNotification = (message, error = false, delay = 2500) => {
-    dispatch({
-      type: 'SET_NOTIFICATION',
-      data: { error: error, message: message },
-    })
-    setTimeout(() => {
-      dispatch({
-        type: 'CLEAR_NOTIFICATION',
-      })
-    }, delay)
-  }
-
   const createBlog = async (blogObject) => {
     try {
       dispatch(addBlog(blogObject))
       blogFormRef.current.toggleVisibility()
-      showNotification(
-        `A new blog "${blogObject.title}" by ${blogObject.author} added`
+      dispatch(
+        setNotification(
+          `A new blog "${blogObject.title}" by ${blogObject.author} added`
+        )
       )
     } catch (error) {
       console.log('Error creating a blog', error)
-      showNotification(error.response.data.error, true, 5000)
+      dispatch(setNotification(error.response.data.error, true, 5000))
       throw error // Throw error so blog form knowns error happened and does not reset fields
     }
   }

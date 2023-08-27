@@ -1,34 +1,35 @@
+import { createSlice } from '@reduxjs/toolkit'
+
+/**
+ * 7.10 - Refactor the application to use Redux to manage the notification data.
+ */
+
 const initialState = { message: '', error: false, timeoutId: undefined }
 
-const notificationReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'SET_NOTIFICATION':
+const notificationSlice = createSlice({
+  name: 'notification',
+  initialState: initialState,
+  reducers: {
+    createNotification(state, action) {
       if (state.timeoutId) {
         clearTimeout(state.timeoutId)
       }
       return {
         ...state,
-        message: action.data.message,
-        error: action.data.error,
-        timeoutId: action.data.timeoutId,
+        message: action.payload.message,
+        error: action.payload.error,
+        timeoutId: action.payload.timeoutId,
       }
-    case 'CLEAR_NOTIFICATION':
-      return {
-        ...state,
-        message: '',
-        error: false,
-        timeoutId: undefined,
-      }
-    default:
-      return state
-  }
-}
+    },
+    clearNotification(_state, _action) {
+      return initialState
+    },
+  },
+})
 
-export const clearNotification = () => {
-  return {
-    type: 'CLEAR_NOTIFICATION',
-  }
-}
+export const { clearNotification, createNotification } =
+  notificationSlice.actions
+export default notificationSlice.reducer
 
 export const setNotification = (notification, error = false, delay = 2.5) => {
   return async (dispatch) => {
@@ -36,11 +37,12 @@ export const setNotification = (notification, error = false, delay = 2.5) => {
       () => dispatch(clearNotification()),
       delay * 1000
     )
-    dispatch({
-      type: 'SET_NOTIFICATION',
-      data: { message: notification, error: error, timeoutId: timeoutId },
-    })
+    dispatch(
+      createNotification({
+        message: notification,
+        error: error,
+        timeoutId: timeoutId,
+      })
+    )
   }
 }
-
-export default notificationReducer

@@ -4,7 +4,7 @@ const baseUrl = '/api/blogs'
 let userToken = null
 
 const setToken = (token) => {
-  userToken = `bearer ${token}`
+  userToken = `Bearer ${token}`
 }
 
 const getAll = async () => {
