@@ -1,7 +1,12 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { createComment } from '../reducers/blogReducer'
+import { Button, Textarea } from '@nextui-org/react'
 
+/**
+ * 7.19 - Extend your application so that users can add comments
+ * to blog posts from the frontend:
+ */
 const CommentForm = ({ blogId }) => {
   const [comment, setComment] = useState('')
   const dispatch = useDispatch()
@@ -16,13 +21,12 @@ const CommentForm = ({ blogId }) => {
 
   return (
     <form onSubmit={submitComment}>
-      <input
-        type="text"
+      <Textarea
         value={comment}
         onChange={({ target }) => setComment(target.value)}
         id="comment"
       />
-      <button type="submit">add comment</button>
+      <Button type="submit">Add comment</Button>
     </form>
   )
 }

@@ -1,10 +1,6 @@
-h1 {
-  margin-top: 0.5rem;
-}
-
-body {
-  padding: 0.5rem 1rem;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 label {
   display: inline-block;

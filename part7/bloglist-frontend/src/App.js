@@ -10,9 +10,11 @@ import Notification from './components/Notification'
 import UsersList from './components/UsersList'
 import UserPage from './components/UserPage'
 import Blog from './components/Blog'
-import Nav from './components/Nav'
+import Header from './components/Header'
+import useDarkMode from 'use-dark-mode'
 
 const App = () => {
+  const darkMode = useDarkMode(false)
   const dispatch = useDispatch()
   const user = useSelector((state) => state.login.currentUser)
 
@@ -36,32 +38,25 @@ const App = () => {
   }
 
   return (
-    <div>
-      <h2>Blogs</h2>
-      <Notification />
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          backgroundColor: 'lightblue',
-          alignItems: 'center',
-          padding: '0.5rem',
-        }}
-      >
-        <Nav />
-        <div>
-          <span>{user.name ? user.name : user.username} logged in </span>
-          <button onClick={handleLogout}>Log out</button>
-        </div>
-      </div>
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/blogs" element={<HomePage />} />
-        <Route path="/users" element={<UsersList />} />
-        <Route path="/users/:userId" element={<UserPage />} />
-        <Route path="/blogs/:blogId" element={<Blog />} />
-        <Route path="*" element={<div>Page not found</div>} />
-      </Routes>
+    <div
+      className={`${
+        darkMode.value ? 'dark' : ''
+      } text-foreground bg-background min-h-screen`}
+    >
+      <Header handleLogout={handleLogout} user={user} />
+      <main className="max-w-7xl px-8">
+        <h2>Blogs</h2>
+
+        <Notification />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/blogs" element={<HomePage />} />
+          <Route path="/users" element={<UsersList />} />
+          <Route path="/users/:userId" element={<UserPage />} />
+          <Route path="/blogs/:blogId" element={<Blog />} />
+          <Route path="*" element={<div>Page not found</div>} />
+        </Routes>
+      </main>
     </div>
   )
 }

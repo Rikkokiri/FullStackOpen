@@ -73,6 +73,13 @@ export const deleteBlog = (id) => {
   }
 }
 
+/*
+ * 7.18 - Implement the functionality for commenting on blog posts.
+ * Comments should be anonymous, meaning that they are not associated with the user
+ * who left the comment.
+ * An appropriate mechanism for adding comments to a blog post would be
+ * an HTTP POST request to the api/blogs/:id/comments endpoint.
+ */
 export const createComment = (blogId, comment) => {
   return async (dispatch) => {
     const newComment = await blogService.addComment(blogId, {
@@ -81,5 +88,6 @@ export const createComment = (blogId, comment) => {
     console.log('New comment: ', newComment)
     const updatedBlog = await blogService.getOne(blogId)
     dispatch(updateBlog(updatedBlog))
+    // TODO: Show error if comment creation fails
   }
 }
