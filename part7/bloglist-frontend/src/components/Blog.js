@@ -1,7 +1,8 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
-import { redirect, useParams } from 'react-router-dom'
+import { setNotification } from '../reducers/notificationReducer'
+import { useNavigate, useParams } from 'react-router-dom'
 import CommentForm from './CommentForm'
 import { Avatar, Button, Link } from '@nextui-org/react'
 import { BsFillHandThumbsUpFill, BsFillTrash3Fill } from 'react-icons/bs'
@@ -21,6 +22,7 @@ const Blog = () => {
   const user = useSelector((state) => state.login.currentUser)
   const allowDelete = blog?.user.username === user.username
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const handleLike = async (blog) => {
     dispatch(likeBlog(blog))
@@ -28,8 +30,16 @@ const Blog = () => {
 
   const removeBlog = async (blog) => {
     if (window.confirm(`Remove "${blog.title}" by ${blog.author}?`)) {
-      dispatch(deleteBlog(blog.id))
-      redirect('/')
+      try {
+        await dispatch(deleteBlog(blog.id))
+        navigate('/')
+        dispatch(setNotification(`Blog "${blog.title}" removed`))
+      } catch (err) {
+        console.log('Error deleting blog', err)
+        dispatch(
+          setNotification(`Failed to delete blog "${blog.title}"`, true, 5)
+        )
+      }
     }
   }
 
@@ -54,8 +64,7 @@ const Blog = () => {
           </div>
 
           <div className="my-2">
-            Submitted by user{' '}
-            <span className="font-bold">{blog.user.username}</span>
+            Submitted by <span className="font-bold">{blog.user.username}</span>
           </div>
           <div className="flex flex-row justify-between items-center">
             <div>
@@ -91,18 +100,13 @@ const Blog = () => {
           <ul className="flex flex-col gap-4 my-8">
             {blog.comments.map((comment) => (
               <li key={comment.id} className="flex gap-4">
-                <Avatar
-                  showFallback
-                  // color="primary"
-                  size="sm"
-                  className="flex-none"
-                />
+                <Avatar showFallback size="sm" className="flex-none" />
                 <p>{comment.content}</p>
               </li>
             ))}
           </ul>
         ) : (
-          <div>No comments yet</div>
+          <div className="my-4">No comments yet</div>
         )}
       </div>
     </div>
