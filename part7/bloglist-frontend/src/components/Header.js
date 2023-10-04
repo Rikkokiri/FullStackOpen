@@ -5,6 +5,7 @@ import {
   Navbar,
   NavbarContent,
   NavbarItem,
+  Spacer,
 } from '@nextui-org/react'
 import { ThemeSwitcher } from './ThemeSwitcher'
 
@@ -35,6 +36,7 @@ const Header = ({ user, handleLogout }) => {
             Log out
           </Button>
         </NavbarItem>
+        <Spacer />
         <NavbarItem>
           <ThemeSwitcher />
         </NavbarItem>

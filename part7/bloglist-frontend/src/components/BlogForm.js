@@ -27,7 +27,7 @@ const BlogForm = ({ createNewBlog }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="flex flex-col gap-4 max-w-md">
-        <h2>Create new</h2>
+        <h2 className="text-xl font-bold">Create new</h2>
         <div>
           <label htmlFor="title">Title</label>
           <Input
