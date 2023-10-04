@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { createBlog, selectSortedBlogs } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { Link } from 'react-router-dom'
+import { Card, CardBody } from '@nextui-org/react'
 
 const HomePage = () => {
   const blogFormRef = useRef()
@@ -35,8 +36,14 @@ const HomePage = () => {
       <br />
       <ul>
         {blogs.map((blog) => (
-          <li key={blog.id}>
-            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+          <li key={blog.id} className="my-3 no-border">
+            <Card className="px-1 py-0 text-default-400 hover:bg-secondary-100">
+              <CardBody className="py-3">
+                <Link to={`/blogs/${blog.id}`} color="foreground">
+                  {blog.title}
+                </Link>
+              </CardBody>
+            </Card>
           </li>
         ))}
       </ul>

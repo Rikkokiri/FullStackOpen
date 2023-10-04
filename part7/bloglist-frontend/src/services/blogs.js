@@ -25,6 +25,7 @@ const getOne = async (id) => {
 const create = async (newObject) => {
   const config = { headers: { Authorization: userToken } }
   const response = await axios.post(baseUrl, newObject, config)
+  console.log('Response: ', response)
   return response.data
 }
 

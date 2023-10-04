@@ -25,8 +25,11 @@ const CommentForm = ({ blogId }) => {
         value={comment}
         onChange={({ target }) => setComment(target.value)}
         id="comment"
+        className="max-w-lg mb-2"
       />
-      <Button type="submit">Add comment</Button>
+      <Button type="submit" color="primary">
+        Add comment
+      </Button>
     </form>
   )
 }

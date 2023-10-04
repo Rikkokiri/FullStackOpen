@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { selectUserById } from '../reducers/userReducer'
+import { Link } from 'react-router-dom'
 
 /**
  *
@@ -20,11 +21,18 @@ const UserPage = () => {
 
   return (
     <div>
-      <h2>{user.name}</h2>
+      <h2 className="text-xl mb-4 font-bold">{user.name}</h2>
       <h3>Added blogs</h3>
-      <ul>
+      <ul className="list-disc pl-4">
         {user.blogs.map((blog) => (
-          <li key={blog.id}>{blog.title}</li>
+          <li key={blog.id}>
+            <Link
+              to={`/blogs/${blog.id}`}
+              className="text-primary hover:text-secondary"
+            >
+              {blog.title}
+            </Link>
+          </li>
         ))}
       </ul>
     </div>

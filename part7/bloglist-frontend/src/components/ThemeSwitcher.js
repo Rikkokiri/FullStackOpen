@@ -1,5 +1,6 @@
 import useDarkMode from 'use-dark-mode'
 import { Switch } from '@nextui-org/react'
+import { BsFillMoonStarsFill, BsSunFill } from 'react-icons/bs'
 
 export const ThemeSwitcher = () => {
   const darkMode = useDarkMode(false)
@@ -8,14 +9,13 @@ export const ThemeSwitcher = () => {
     <div>
       <Switch
         defaultSelected
-        size="sm"
-        color="success"
-        // startContent={<SunIcon />}
-        // endContent={<MoonIcon />}
+        size="md"
+        color="primary"
+        alt="Switch between light and dark mode"
+        startContent={<BsSunFill />}
+        endContent={<BsFillMoonStarsFill />}
         onChange={darkMode.toggle}
-      >
-        Dark mode
-      </Switch>
+      ></Switch>
     </div>
   )
 }

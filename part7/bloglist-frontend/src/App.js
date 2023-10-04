@@ -29,10 +29,17 @@ const App = () => {
 
   if (!user) {
     return (
-      <div>
-        <h1>Log in to the application</h1>
-        <Notification />
-        <LoginForm />
+      <div
+        className={`${
+          darkMode.value ? 'dark' : ''
+        } text-foreground bg-background min-h-screen`}
+      >
+        <div className="mx-auto py-8 md:max-w-md xs:max-w-xs px-4 flex flex-col gap-4">
+          <h1>BlogList</h1>
+          <h2>Log in to the application</h2>
+          <Notification />
+          <LoginForm />
+        </div>
       </div>
     )
   }
@@ -45,7 +52,7 @@ const App = () => {
     >
       <Header handleLogout={handleLogout} user={user} />
       <main className="max-w-7xl px-8">
-        <h2>Blogs</h2>
+        <h1 className="my-6">BlogList</h1>
 
         <Notification />
         <Routes>

@@ -1,8 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Croissant+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rammetto+One&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-label {
+
+h1 {
+  font-family: 'Montserrat', sans-serif;
+  font-family: 'Croissant One', cursive;
+  font-family: 'Dela Gothic One', cursive;
+  font-family: 'Rammetto One', cursive;
+}
+
+/* If you want to add your own default base styles for specific HTML elements,
+use the @layer directive to add those styles to Tailwind’s base layer: */
+@layer base {
+  h1 {
+    @apply text-3xl;
+    @apply text-primary;
+  }
+}
+
+/* label {
   display: inline-block;
   width: 3.5rem;
 }
@@ -39,6 +60,7 @@ li button {
 .form-login label {
   width: 4.5rem;
 }
+*/
 
 .status,
 .error {
@@ -62,6 +84,7 @@ li button {
   color: darkred;
 }
 
+/*
 .blog-details {
   margin: 0.3rem 0;
   padding: 0.5rem;
@@ -78,4 +101,4 @@ li button {
 
 .blog-details h3 {
   margin-top: 0;
-}
+} */

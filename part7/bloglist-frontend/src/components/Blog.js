@@ -1,8 +1,10 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteBlog, likeBlog } from '../reducers/blogReducer'
-import { useParams } from 'react-router-dom'
+import { redirect, useParams } from 'react-router-dom'
 import CommentForm from './CommentForm'
+import { Avatar, Button, Link } from '@nextui-org/react'
+import { BsFillHandThumbsUpFill, BsFillTrash3Fill } from 'react-icons/bs'
 
 /**
  * 7.16 - Implement a separate view for blog posts.
@@ -27,6 +29,7 @@ const Blog = () => {
   const removeBlog = async (blog) => {
     if (window.confirm(`Remove "${blog.title}" by ${blog.author}?`)) {
       dispatch(deleteBlog(blog.id))
+      redirect('/')
     }
   }
 
@@ -39,34 +42,69 @@ const Blog = () => {
   }
 
   return (
-    <div className="blog-details">
-      <h2>{blog.title}</h2>
-      <h3>by {blog.author}</h3>
-      <div>
-        <a href={blog.url} target="_blank" rel="noreferrer">
-          {blog.url}
-        </a>
-        <div className="blog-likes">
-          Likes {blog.likes}{' '}
-          <button onClick={() => handleLike(blog)}>Like</button>
+    <div>
+      <div className="my-4">
+        <h2 className="text-2xl font-bold">{blog.title}</h2>
+        <h3>by {blog.author}</h3>
+        <div className="pt-2">
+          <div>
+            <Link href={blog.url} isExternal showAnchorIcon>
+              {blog.url}
+            </Link>
+          </div>
+
+          <div className="my-2">
+            Submitted by user{' '}
+            <span className="font-bold">{blog.user.username}</span>
+          </div>
+          <div className="flex flex-row justify-between items-center">
+            <div>
+              <span>Likes {blog.likes}</span>
+              <Button
+                className="ml-4"
+                onClick={() => handleLike(blog)}
+                size="sm"
+                variant="ghost"
+                startContent={<BsFillHandThumbsUpFill />}
+              >
+                Like
+              </Button>
+            </div>
+            {allowDelete && (
+              <Button
+                size="md"
+                variant="ghost"
+                onClick={() => removeBlog(blog)}
+                startContent={<BsFillTrash3Fill />}
+              >
+                Remove
+              </Button>
+            )}
+          </div>
         </div>
-        <div>{blog.user.username}</div>
-        {allowDelete && (
-          <button onClick={() => removeBlog(blog)}>Remove</button>
+      </div>
+      <div>
+        <h3 className="text-lg font-bold">Comments</h3>
+        <CommentForm blogId={blog.id} />
+
+        {blog.comments.length ? (
+          <ul className="flex flex-col gap-4 my-8">
+            {blog.comments.map((comment) => (
+              <li key={comment.id} className="flex gap-4">
+                <Avatar
+                  showFallback
+                  // color="primary"
+                  size="sm"
+                  className="flex-none"
+                />
+                <p>{comment.content}</p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div>No comments yet</div>
         )}
       </div>
-      <br />
-      <h3>Comments</h3>
-      <CommentForm blogId={blog.id} />
-      {blog.comments.length ? (
-        <ul>
-          {blog.comments.map((comment) => (
-            <li key={comment.id}>{comment.content}</li>
-          ))}
-        </ul>
-      ) : (
-        <div>No comments yet</div>
-      )}
     </div>
   )
 }

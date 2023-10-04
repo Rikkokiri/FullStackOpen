@@ -1,5 +1,6 @@
 import { useState, forwardRef, useImperativeHandle } from 'react'
 import PropTypes from 'prop-types'
+import { Button } from '@nextui-org/react'
 
 const Togglable = forwardRef(({ children, showLabel, hideLabel }, ref) => {
   const [visible, setVisible] = useState(false)
@@ -16,14 +17,21 @@ const Togglable = forwardRef(({ children, showLabel, hideLabel }, ref) => {
   })
 
   return (
-    <div className="togglable">
+    <div>
       <div style={showWhenVisible}>
         {children}
-        <button onClick={toggleVisibility}>{hideLabel}</button>
+        <Button onClick={toggleVisibility} className="mt-4">
+          {hideLabel}
+        </Button>
       </div>
-      <button style={hideWhenVisible} onClick={toggleVisibility}>
+      <Button
+        style={hideWhenVisible}
+        onClick={toggleVisibility}
+        className="mt-4"
+        color="primary"
+      >
         {showLabel}
-      </button>
+      </Button>
     </div>
   )
 })

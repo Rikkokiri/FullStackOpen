@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Button, Input } from '@nextui-org/react'
 import { useDispatch } from 'react-redux'
 import { setNotification } from '../reducers/notificationReducer'
 import { login } from '../reducers/loginReducer'
@@ -21,29 +22,27 @@ const LoginForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="form-login">
-      <div>
-        <label htmlFor="username">username </label>
-        <input
+      <div className="flex flex-col gap-4 mt-2">
+        <Input
+          label="Username"
           type="text"
           value={username}
           onChange={({ target }) => setUsername(target.value)}
           name="username"
           id="username"
         />
-      </div>
-      <div>
-        <label htmlFor="password">password </label>
-        <input
+        <Input
+          label="Password"
           type="password"
           value={password}
           onChange={({ target }) => setPassword(target.value)}
           name="password"
           id="password"
         />
+        <Button id="submit-login" type="submit">
+          Login
+        </Button>
       </div>
-      <button id="submit-login" type="submit">
-        Login
-      </button>
     </form>
   )
 }
