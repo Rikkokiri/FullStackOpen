@@ -85,7 +85,6 @@ export const createComment = (blogId, comment) => {
     const newComment = await blogService.addComment(blogId, {
       content: comment,
     })
-    console.log('New comment: ', newComment)
     const updatedBlog = await blogService.getOne(blogId)
     dispatch(updateBlog(updatedBlog))
     // TODO: Show error if comment creation fails

@@ -43,15 +43,3 @@ module.exports = {
     }),
   ],
 }
-
-// Colors:
-// error red: #B81365 or #C1292E
-// Potential primary colors (for dark mode)
-// #50B181
-// ##DDA0DD (plum)
-// #007C8F
-
-// Light theme toggle color maybe: #F2E12C
-
-// Light theme:
-// header etc. maybe: #d0d7de (rgba 0.24), rgba(208, 215, 222, 0.24)
